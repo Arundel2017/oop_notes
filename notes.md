@@ -42,7 +42,7 @@ And references to the following resources:
 - A **value** is a set of bits interpreted according to type.
 - C++ features **built-in types**, among the most important are **bool**, **char** (C-style character), **int**, **double**, **unsigned** (non-negative int).
 - The standard library defines other important types, eg **string** and **vector** (like a JS array).
-- To use a type from a **namespace** you need to `#include` it at the start of your file, and either refer to it using namespace notation `std::cout` or bring the namespace into scope `using namespace std` then just `cout` will work.
+- To use a type from a **namespace** you need to `#include` it at the start of your file, and either refer to it using namespace notation `std::cout` or bring the namespace into scope `using namespace std;` (can lead to name clashes so avoid where possible) or the particular type `using std::cout;` then just `cout` will work.
 - C++ also allows **User Defined Types**, also known as **Classes**, which are *first class citizens*.
 - Before an object can be used it must be **initialized** which allocates the memory correctly depending on type.
 - A named variable can only be used if it is in **scope**. There are four levels of scope:
@@ -50,7 +50,7 @@ And references to the following resources:
   - **Class Scope** - a name is called a **member name** if it is declared in a class, outside any function or lambda.
   - **Namespace Scope** - a name is called a **namespace member name** if declared in a namespace outside a function/lambda.
   - **Global Scope** - a name declared outside any construct.
-- variables can be made *immutable* by declairing them as `const` (meaning "I promise not to change this"), or `constexpr` (meaning "to be evaluated at compile time"), the difference is when the value is calculated either run-time or compile time respectively.
+- variables can be made *immutable* by declaring them as `const` (meaning "I promise not to change this"), or `constexpr` (meaning "to be evaluated at compile time"), the difference is when the value is calculated either run-time or compile time respectively.
 - in variable declarations `*` signifies a **pointer** and `&` signifies a **reference**. Both are ways to denote an object in memory without evaluating or copying it. The syntax to access the values is different (see *Tour*, p. 11)
 
 
@@ -83,7 +83,7 @@ And references to the following resources:
 - The **lifetime** of an object is *the time during the program's execution* that the object exists.
 - C++ is block scoped, parameters and variables defined in a block are **local variables** they will hide declarations of the same name made in outer scope.
 - Can create global objects defined outside any function, will not be destroyed until the program ends.
-- Objects that corresponde to ordinarly local variables are destroyed when control passes through the end of the block where they are defined. They are known as **automatic objects**.
+- Objects that correspond to ordinary local variables are destroyed when control passes through the end of the block where they are defined. They are known as **automatic objects**.
 - NB you cannot nest functions within other functions so **no closure**.
 - If you need a local variable to persist across multiple function calls you need to declare it as a **local static object**, using the `static` keyword.
 

@@ -19,7 +19,7 @@
     - [Supplementary Reading](#supplementary-reading)
     - [Core Guidelines](#core-guidelines-1)
     - [CPP Reference](#cpp-reference-1)
-- [Topic 2a Fundamental Data Types](#topic-2a-fundamental-data-types)
+- [Topic 2a Fundamental and Built-in Data Types](#topic-2a-fundamental-and-built-in-data-types)
   - [Points to Remember](#points-to-remember-3)
   - [Booleans](#booleans)
   - [Number Types](#number-types)
@@ -33,9 +33,15 @@
     - [Supplementary Reading](#supplementary-reading-2)
     - [Core Guidelines](#core-guidelines-2)
     - [CPP Reference](#cpp-reference-3)
-  - [Enums/Enum Classes](#enumsenum-classes)
   - [Vectors](#vectors)
-- [Topic 2b Classes](#topic-2b-classes)
+- [Topic 2b User Defined Types: Enumerations and Classes](#topic-2b-user-defined-types-enumerations-and-classes)
+  - [Enumerations](#enumerations)
+    - [Points to Remember](#points-to-remember-6)
+    - [Key Reading](#key-reading-5)
+    - [Supplementary Reading](#supplementary-reading-3)
+    - [Core Guidelines](#core-guidelines-3)
+    - [CPP Reference](#cpp-reference-4)
+  - [Classes](#classes)
 - [Topic 2c File Organization](#topic-2c-file-organization)
 
 ## Intro
@@ -107,13 +113,13 @@ And references to the following resources:
 
 #### Key Reading
 
-- *Primer*: Chapter 6, sections 6.1 - 6.3 (pp 201 - 230)
-- *Programming*: Chapter 8 (pp 255 - 297)
+- *Primer*: Chapter 6, sections 6.1 - 6.3, *Function Basics*, *Argument Passing*, and *Return Types and the `return` Statement* (pp 201 - 230)
+- *Programming*: Chapter 8, *Technicalities: Functions* (pp 255 - 297)
 
 #### Supplementary Readings
-- *Tour*: Section 1.3 (pp 4 - 5)
-- *Programming*:  Section 4.5 (pp 113 - 117)
-- *C++*: Chapter 12, esp. sections 12.1 - 12.1.5 (pp 305 - 310)
+- *Tour*: Section 1.3, *Functions* (pp 4 - 5)
+- *Programming*:  Section 4.5, *Functions* (pp 113 - 117)
+- *C++*: Chapter 12, *Functions*, especially sections 12.1 - 12.1.5 (pp 305 - 310)
 
 #### Core Guidelines
 
@@ -174,18 +180,18 @@ if(!cin)
 ```
 
 #### Key Reading
-- *Programming*: Chapter 10 (p. 345), especially:
-  - Sections 10.1 and 10.2 (pp 346 - 349)
-  - Sections 10.6 and 10.7 (pp 354 - 363)
-- *Primer*: Sections 1.2 (pp 5 - 9) and 8.1 (pp 309 - 316)
+- *Programming*: Chapter 10, *Input and Output Streams* (p. 345ff), especially:
+  - Sections 10.1 and 10.2, *Input and Output* and *The I/O Stream model* (pp 346 - 349)
+  - Sections 10.6 and 10.7, *I/O error handling* and *Reading a single value* (pp 354 - 363)
+- *Primer*: Sections 1.2, *A First Look at Input and Output* (pp 5 - 9) and 8.1, *The IO Classes* (pp 309 - 316)
 
 #### Supplementary Reading
-- *Tour*: Chapter 10, esp sections 10.1-10.4 (pp 123 - 127)
+- *Tour*: Chapter 10, *Input and Output* especially sections 10.1-10.4 (pp 123 - 127)
 - *Programming*:
   - Section 3.1, *Input* (pp 60 - 62)
   - Section 3.3, *Input and Type* (pp 64 - 65)
   - Section 5.6.3, *Bad Input* (pp 150 - 152)
-- *C++*: Chapter 38, esp:
+- *C++*: Chapter 38, especially:
   - Section 38.1 *Introduction* (pp 1073 - 1075)
   - Section 38.3 *Error Handling* (pp 1080 - 1081)
   - Section 38.4.1.1 *Formatted Input* (pp 1082-1083)
@@ -203,7 +209,7 @@ if(!cin)
 - [std::flush](https://en.cppreference.com/w/cpp/io/manip/flush)
 - [std::endl](https://en.cppreference.com/w/cpp/io/manip/endl)
 
-## Topic 2a Fundamental Data Types
+## Topic 2a Fundamental and Built-in Data Types
 
 ### Points to Remember
 - Types are fundamental to C++. All objects in memory have a fixed type. Think of an object as a box in memory that can only hold a certain type.
@@ -334,9 +340,48 @@ if(!cin)
 - [String Library](https://en.cppreference.com/w/cpp/string)
 - [basic strings](https://en.cppreference.com/w/cpp/string/basic_string)
 
-### Enums/Enum Classes
-
 ### Vectors
-## Topic 2b Classes
 
+## Topic 2b User Defined Types: Enumerations and Classes
+### Enumerations
+#### Points to Remember
+- **Enumerations**, or `enums` are a simple user-defined type. They specify a set of values (or **enumerators**) as *symbolic constants* and allow us to group together *sets of integral constants*.
+- Enumerations are very useful. Use them when we need a set of related named integer constants. EG, for alternatives (up,down; yes, no; on, off, N, S, E, W; bid, offer) or distinct values (red, green blue, yellow, crimson)
+- There are two types of enumeration. Original `enums` are known as **plain** or **unscoped**. Their enumerators can "pollute" the scope in which the enum is defined as they implicitly export their enumerators to their scope. They also allow implicit conversion to int.
+- Generally avoided now in favour of C++ **scoped enumerations** or `enum classes`, use as follows:
+
+  ```C++
+  enum class Month {
+    jan =1, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec
+  };
+
+  Month m = Month::feb; //good
+  int n = m; //error, no implicit conversion from Month to int
+  m = 7; //error, can't assign an int to a Month
+  ```
+- The `class` denotes that the enumerators are in the scope of the enumeration, so to refer to `jan` you say `Month::jan`. No implicit conversion to ints.
+- The compiler will pick the value for each enumerator you don't specify, default starting at `0`, then incrementing by 1. Better to let the compiler pick values for you, though you can explicitly define each value.
+- You can also specify the underlying type of the enum, if you don't want an int, but this is generally avoided.
+
+#### Key Reading
+- *Programming*: Section 9.5, *Enumerations* (pp 318 - 321)
+- *Primer*: Section 19.3, *Enumerations* (pp 832 - 835)
+
+#### Supplementary Reading
+- *C++*: Section 8.4, *Enumerations* (pp 218 - 224)
+
+#### Core Guidelines
+- [Enumerations](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#S-enum)
+- [Use enumerations to represent sets of related named constants](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Renum-set)
+- [Prefer enum classes over "plain" enums](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Renum-class)
+- [Define operations on enumerations for safe use](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Renum-oper)
+- [Avoid ALL_CAPS](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Renum-caps)
+- [Avoid unnamed enums](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Renum-unnamed)
+- [Specify the underlying type of the enum only if necessary](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Renum-underlying)
+- [Specify the enumerator values only if necessary](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Renum-value)
+
+#### CPP Reference
+- [Enum declaration](https://en.cppreference.com/w/cpp/language/enum)
+
+### Classes
 ## Topic 2c File Organization

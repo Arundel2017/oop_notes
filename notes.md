@@ -19,6 +19,18 @@
     - [Supplementary Reading](#supplementary-reading)
     - [Core Guidelines](#core-guidelines-1)
     - [CPP Reference](#cpp-reference-1)
+- [Topic 2a Fundamental Data Types](#topic-2a-fundamental-data-types)
+  - [Points to Remember](#points-to-remember-3)
+  - [Booleans](#booleans)
+  - [Number Types](#number-types)
+    - [Key Reading](#key-reading-3)
+    - [Supplementary Reading](#supplementary-reading-1)
+    - [CPP Reference](#cpp-reference-2)
+  - [Strings](#strings)
+  - [Enums/Enum Classes](#enumsenum-classes)
+  - [Vectors](#vectors)
+- [Topic 2b Classes](#topic-2b-classes)
+- [Topic 2c File Organization](#topic-2c-file-organization)
 
 ## Intro
 
@@ -184,3 +196,82 @@ if(!cin)
 - [I/O Library](https://en.cppreference.com/w/cpp/io)
 - [std::flush](https://en.cppreference.com/w/cpp/io/manip/flush)
 - [std::endl](https://en.cppreference.com/w/cpp/io/manip/endl)
+
+## Topic 2a Fundamental Data Types
+
+### Points to Remember
+- Types are fundamental to C++. All objects in memory have a fixed type. Think of an object as a box in memory that can only hold a certain type.
+- All fundamental types have a fixed size in memory, based on hardware and the compiler used, that determines the range of values that can be represented.
+- The smallest chunk of addressable memory is a **byte** (8 bits), the basic unit of storage in a machine is referred to as a **word**, in most machines a word is either 32 or 64 bits (4 or 8 bytes).
+- Use `sizeof($var or type)` to see the byte size of the type on specific hardware.
+- For the guaranteed value ranges of fundamental types see [cpp reference](https://en.cppreference.com/w/cpp/language/types) or *Primer*, p. 32. The main ones are:
+  - `char` - 8 bits.
+  - `int` - 16 bits.
+  - `long` - 32 bits.
+  - `long long` - 64 bits.
+  - `float` - 6 significant digits
+  - `double` - 10 significant digits
+- A program is **type-safe** when objects are only used according to the rules for their type.
+- There are ways of doing operations that are not type-safe, eg using a variable before it has been initialized.
+- Initialize all variables when you declare them to avoid problems (eg `double x = 0.0;` not `double x;`) *Primer*, p. 45.
+- A **safe conversion** involves no information loss. The following are safe:
+  - bool to char
+  - bool to int
+  - bool to double
+  - char to int
+  - char to double
+  - int to double
+- An **unsafe conversion** risks information loss, but is still accepted by the compiler. These are unsafe:
+  - double to int
+  - double to char
+  - double to bool
+  - int to char
+  - int to bool
+  - char to bool
+
+### Booleans
+
+- By definition, `true` has the value `1`, `false` has the value `0` when converted to integers.
+- Integers can be implicitly converted to `bool` values - nonzero integers convert to `true`, `0` converts to `false`.
+- A pointer can also be implicitly converted, a `non-null` pointer converts to `true` a `nullptr` converts to `false`. (so if `p` is a pointer then `if(p)` works).
+
+### Number Types
+
+- C++ compilers use [Two's Complement](https://en.wikipedia.org/wiki/Two%27s_complement) representation of numbers.
+- Floats and doubles use [IEEE 754](https://en.wikipedia.org/wiki/IEEE_754) formats, 32 bit for floats, 64 bit for doubles.
+- Integer types are default decimal. `0b` prefix indicates binary, `0x` prefix indicates hex, `0` prefix means octal, eg `0334`.
+- For a full table of prefixes and suffixes on number types see *C++*, p. 147.
+- Numbers might be silently cast on initialization or assignment. eg `float f = 3.2` may cast a double to a float with unpredictable results and `int i = 4.3` will truncate to `4`. You can explicitly say `float f = 3.2f` to get round the first problems, compiler should warn about the second.
+- Initialization syntax `int i {4.3}` will throw a narrowing error on compilation (c++ 11).
+- Memory restrictions mean that when we do maths with floating-point numbers **rounding errors** are inevitable. The only question is whether they are significant enough to affect the result. Always check computation results for plausibility.
+- When working with integers, it's common to have problems with **overflow** where a number becomes negative when it exceeds the maximum value that is possible to store. Compiler will not catch these errors when computed at run time.
+- Can also have issues casting an integer to float - because they can take the same space and float needs exponent and mantissa. So can have issues with float not representing the largest ints correctly.
+- Avoid unsigned ints if possible, using them is error-prone (*Programming*, p 965). Avoid mixing signed and unsigned ints (*Primer*, p. 37)
+- Avoid using floats, use doubles instead as floats lack required precision, also avoid `long double` as it is very costly (*Primer*, p. 34)
+#### Key Reading
+
+- *Primer*: Sections 2.1 and 2.2.1 - 2.2.2, *Primitive Built-in Types* and *Variables* (pp 32 - 46)
+- *C++*: Section 6.2, *Types* (pp 138 - 151)
+
+#### Supplementary Reading
+
+- *Tour*: Section 1.4 (pp 5 - 8)
+- *Programming*:
+  - Sections 3.8 and 3.9, *Types and objects* and *Type Safety* (pp 77 - 88)
+  - Section 24.2, *Size, precision and overflow* (pp 890 - 895)
+  - Section 25.5.3, *Signed and unsigned integers* (pp 961 - 965)
+-
+#### CPP Reference
+- [Fundamental Types](https://en.cppreference.com/w/cpp/language/types)
+
+
+### Strings
+
+- You cannot `switch` on strings, annoyingly.
+
+### Enums/Enum Classes
+
+### Vectors
+## Topic 2b Classes
+
+## Topic 2c File Organization

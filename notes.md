@@ -23,10 +23,16 @@
   - [Points to Remember](#points-to-remember-3)
   - [Booleans](#booleans)
   - [Number Types](#number-types)
+    - [Points to Remember](#points-to-remember-4)
     - [Key Reading](#key-reading-3)
     - [Supplementary Reading](#supplementary-reading-1)
     - [CPP Reference](#cpp-reference-2)
   - [Strings](#strings)
+    - [Points to Remember](#points-to-remember-5)
+    - [Key Reading](#key-reading-4)
+    - [Supplementary Reading](#supplementary-reading-2)
+    - [Core Guidelines](#core-guidelines-2)
+    - [CPP Reference](#cpp-reference-3)
   - [Enums/Enum Classes](#enumsenum-classes)
   - [Vectors](#vectors)
 - [Topic 2b Classes](#topic-2b-classes)
@@ -131,7 +137,7 @@ And references to the following resources:
 - NB if you don't flush a statement while debugging it might be left in the buffer when the program crashes.
 - `>>` behaves like `<<` but takes an object as its right operand to store the input.
 - `>>` is type sensitive, it reads according to the type of variable you are reading into.
-- Whitespace terminates the reading of strings, but is otherwise ignored by `>>`.
+- Trailing whitespace terminates the reading of strings, but is otherwise ignored by `>>`. Leading whitespace is ignored for reading strings.
 - Input of the wrong type will cause the `>>` operation to fail.
 
 #### Basic Error Handling
@@ -237,6 +243,7 @@ if(!cin)
 
 ### Number Types
 
+#### Points to Remember
 - C++ compilers use [Two's Complement](https://en.wikipedia.org/wiki/Two%27s_complement) representation of numbers.
 - Floats and doubles use [IEEE 754](https://en.wikipedia.org/wiki/IEEE_754) formats, 32 bit for floats, 64 bit for doubles.
 - Integer types are default decimal. `0b` prefix indicates binary, `0x` prefix indicates hex, `0` prefix means octal, eg `0334`.
@@ -255,19 +262,77 @@ if(!cin)
 
 #### Supplementary Reading
 
-- *Tour*: Section 1.4 (pp 5 - 8)
+- *Tour*: Section 1.4, *Types, Variables, and Arithmetic* (pp 5 - 8)
 - *Programming*:
   - Sections 3.8 and 3.9, *Types and objects* and *Type Safety* (pp 77 - 88)
   - Section 24.2, *Size, precision and overflow* (pp 890 - 895)
   - Section 25.5.3, *Signed and unsigned integers* (pp 961 - 965)
--
+
 #### CPP Reference
 - [Fundamental Types](https://en.cppreference.com/w/cpp/language/types)
 
 
 ### Strings
+#### Points to Remember
+- A `string` is a variable length sequence of characters that knows its own length.
+- Use as follows:
+  ```C++
+  #include <string>
+  using std::string;
+  string name = "Matthew King"; //name is a copy of the string literal
+  string defString; //default initialization to empty string
+  string s4c(4, 'c'); // s4c is "cccc"
+  ```
+- You can concatenate a string, a string literal, a C-style string, or a character to a `string`.
+- `+=` appends to the end of a string.
+- Some useful string methods:
+  ```C++
+  #include <string>
+  using std::string;
 
+  string name = "Matthew King";
+  string surname = name.substr(8, 4); // s = "King" arg 1 is index, arg 2 is length
+  name.replace(0,7, "brian"); //name becomes "brian King" arg 1 is index, arg 2 is length, arg 3 is replacement value
+  name[0] = toupper(name[0]); //name becomes "Brian King"
+  bool empty = name.empty(); //returns false as not an empty string
+  string::size_type nameLength = name.size(); //returns length of name string, NB does not return an int!
+  auto nameLength2 = name.size(); // does the same thing, but easier to type, relies on auto typing.
+  bool stringMatch = (name == surname); // returns false - NB comparison is case-sensitive
+  ```
+- Watch out for `.size()` it returns an unsigned bespoke type so be careful of mixing it with signed numbers (*Primer*, p. 88)
+- Comparison operators follow lexicographic ordering: `<, >, <=, >=`.
+- For processing strings - searching, selecting etc, see *Primer*, section 3.2.3 (p. 90ff)
+- `string` is usually implemented using **short-string optimization** where short strings (c. 14 chars) are kept in the `string` object itself, while longer strings are placed on the free store and referred to.
+- Memory allocation for strings can be relatively costly.
+- A `string_view` type allows manipulation of character sequences regardless of how they are stored (eg `std::string` or C-arrays)
+- `getline()` can be used to get an entire line of input, including whitespace but *not including newline*. Use as follows:
+  ```C++
+  string line;
+  while (getline(cin, line))
+      cout << line << '\n'; //NB have to add '\n' back in
+  ```
 - You cannot `switch` on strings, annoyingly.
+#### Key Reading
+- *Primer*: Section 3.2, *Library `string` Type* (pp 84 - 96)
+- *C++*: Chapter 36, *Strings* (pp 1033 - 1049), especially:
+  - Section 36.4, *Advice* (p. 1049)
+  - Section 36.2.1 *Classification Functions* (p. 1034)
+  - Section 36.3.7 *The `find` Family* (p. 1046) on search methods
+
+#### Supplementary Reading
+- *Tour*: Section 9.2, *Strings* (pp 111 - 114)
+- *Programming* Section 23.2 and 23.3, *Strings* and *I/O Streams* (pp 850 - 855), especially:
+  - Selected string operations (p. 851)
+
+#### Core Guidelines
+- [std::string](http://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#SS-string)
+- [Use std::string to own character sequences](http://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rstr-string)
+- [Use char* to refer to a single character](http://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rstr-char*)
+- [Use 's' suffix for string literals meant to be std::string](http://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rstr-s)
+
+#### CPP Reference
+- [String Library](https://en.cppreference.com/w/cpp/string)
+- [basic strings](https://en.cppreference.com/w/cpp/string/basic_string)
 
 ### Enums/Enum Classes
 

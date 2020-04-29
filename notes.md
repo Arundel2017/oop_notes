@@ -422,7 +422,7 @@ v1 == v2        //vectors are equal if they are the same size and each element i
 - Consider vectors the default container, use them unless you have a reason not to (Stroustrup).
 
 #### Key Reading
-- *Primer*: Section 3.3, *Library `vector` Type (pp 96 - 105)
+- *Primer*: Section 3.3, *Library `vector` Type* (pp 96 - 105)
 - *Programming*: Section 4.6, `vector` (pp 117 - 125)
 
 #### Supplementary Reading

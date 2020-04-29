@@ -407,12 +407,14 @@ cout << '\n';
 
 ```C++
 
-v.empty()     //boolean return
-v.size()      //returns number of elements. NB returns vector<T>::size_type, not int
-v[n]          //returns a reference to the element at n in v. NB cannot add elements to vector using [], only access and replace.
-v1 = v2       //replaces elements of v1 with a copy of elements in v2
-v1 == v2      //vectors are equal if they are the same size and each element in v1 is equal to corresponding element in v2
-<, >, <=, >=  //comparisons use dictionary ordering, see *Primer*, p. 102.
+v.empty()       //boolean return
+v.size()        //returns number of elements. NB returns vector<T>::size_type, not int
+v[n]            //returns a reference to the element at n in v. NB cannot add elements to vector using [], only access and replace.
+v.push_back(t)  //adds an element with value t at the end of the vector
+v.pop_back()    //removes last element from vector - careful with references and iterators
+v1 = v2         //replaces elements of v1 with a copy of elements in v2
+v1 == v2        //vectors are equal if they are the same size and each element in v1 is equal to corresponding element in v2
+<, >, <=, >=    //comparisons use dictionary ordering, see *Primer*, p. 102.
 
 ```
 

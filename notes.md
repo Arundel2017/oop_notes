@@ -34,13 +34,18 @@
     - [Core Guidelines](#core-guidelines-2)
     - [CPP Reference](#cpp-reference-3)
   - [Vectors](#vectors)
-- [Topic 2b User Defined Types: Enumerations and Classes](#topic-2b-user-defined-types-enumerations-and-classes)
-  - [Enumerations](#enumerations)
     - [Points to Remember](#points-to-remember-6)
     - [Key Reading](#key-reading-5)
     - [Supplementary Reading](#supplementary-reading-3)
     - [Core Guidelines](#core-guidelines-3)
     - [CPP Reference](#cpp-reference-4)
+- [Topic 2b User Defined Types: Enumerations and Classes](#topic-2b-user-defined-types-enumerations-and-classes)
+  - [Enumerations](#enumerations)
+    - [Points to Remember](#points-to-remember-7)
+    - [Key Reading](#key-reading-6)
+    - [Supplementary Reading](#supplementary-reading-4)
+    - [Core Guidelines](#core-guidelines-4)
+    - [CPP Reference](#cpp-reference-5)
   - [Classes](#classes)
 - [Topic 2c File Organization](#topic-2c-file-organization)
 
@@ -341,6 +346,96 @@ if(!cin)
 - [basic strings](https://en.cppreference.com/w/cpp/string/basic_string)
 
 ### Vectors
+
+#### Points to Remember
+- A `vector` is a collection, or **container** of objects, all with the same type, that knows its own length. Objects in the vector can be accessed through their index.
+- NB `vector` is a template, not a type. Templates allow you to generate different types from them depending on information you pass with `<>` after the template name.
+- In vector's case you specify the type of the objects the vector will hold. EG `vector<int>`, `vector<string>`, `vector<My_class>`. These are three different types.
+- Vectors can hold vectors, declared as follows: `vector<vector<int>>` (or old style `vector<vector<int> >` with a space).
+- Most common is to initialize empty vector and populate at runtime, other common ways to initialize:
+
+```C++
+
+#include <vector>
+using std::vector;
+
+vector<T> v1;   //vector that holds objects of type T. Default initialization is empty (most common).
+
+vector<T> v2(v1); //vector v2 has a copy of every element in v1, could also say v2 = v1.
+
+vector<T> v3(n, val); // vector has n elements of value val
+
+vector<T> v4(n); // vector has n elements with default values for their type (only if that type supports default initialization)
+
+vector<T> v5{a, b, c}; // vector contains a,b,c
+
+```
+
+- For fiddly aspects of initialization, including **list initialization** and **element counts** see *Primer*, p. 99.
+- Key to vectors in C++ is that they *grow efficiently*. Unless all the elements have the same value it is better to initialize an empty vector and then grow it, rather than create a vector of a specific size. (*Primer*, p. 101). Unlike C/Java.
+- `push_back()` method takes a value and adds it to the end of the vector. The most common way to add elements. Some examples:
+
+```C++
+vector<int> v2;
+for (int i =0; i != 100, ++i)
+    v2.push_back(i);
+
+//end of loop v2 has 100 elements, 0 - 99
+
+string word;
+vector<string> text;
+while(cin >> word) {
+  text.push_back(word)
+}
+//text has all the words from the input stream as elements.
+```
+
+- use a range `for` loop to process all elements of a vector:
+
+```C++
+
+vector<int> v{1,2,3,4,5,6,7,8};
+
+for(auto &i : v)      //for all elements in v, NB i is a reference allowing us to change values, auto deduces type.
+  i *= i;             //square the value
+for(auto i : v)       //for each element (not a reference)
+  cout << i << " ";   //outputs the square of the original elements.
+cout << '\n';
+```
+
+- Useful vector methods:
+
+```C++
+
+v.empty()     //boolean return
+v.size()      //returns number of elements. NB returns vector<T>::size_type, not int
+v[n]          //returns a reference to the element at n in v. NB cannot add elements to vector using [], only access and replace.
+v1 = v2       //replaces elements of v1 with a copy of elements in v2
+v1 == v2      //vectors are equal if they are the same size and each element in v1 is equal to corresponding element in v2
+<, >, <=, >=  //comparisons use dictionary ordering, see *Primer*, p. 102.
+
+```
+
+- Range checking is a common problem. Accessing elements out of range does not throw compiler error, and causes undefined values to be returned. For Stroustrup's custom solution see *Tour*, pp 141-142.
+- Consider vectors the default container, use them unless you have a reason not to (Stroustrup).
+
+#### Key Reading
+- *Primer*: Section 3.3, *Library `vector` Type (pp 96 - 105)
+- *Programming*: Section 4.6, `vector` (pp 117 - 125)
+
+#### Supplementary Reading
+- *Tour*: Section 11.2, `vector` (pp 138 - 142)
+- *C++*: Section 31.4.1, `vector` (pp 902 - 906)
+- *Programming*: Chapters 17, 18, and 19 implement a `vector` Template and deep dive into how it works. They cover a lot of ground inc. constructors, destructors, the free store, templates etc. Useful reference for specific issues.
+
+#### Core Guidelines
+- [Containers](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#SS-con)
+- [Prefer STL `vector` by default](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rsl-vectorr)
+- [Avoid Bounds Errors](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rsl-bounds)
+
+#### CPP Reference
+- [vectors](https://en.cppreference.com/w/cpp/container/vector)
+
 
 ## Topic 2b User Defined Types: Enumerations and Classes
 ### Enumerations

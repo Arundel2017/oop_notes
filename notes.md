@@ -545,6 +545,9 @@ v1 == v2        //vectors are equal if they are the same size and each element i
   {
     //check date validity
   }
+
+  Date date1 {30,4,2020}; // uses first constructor, NB Stroustrup prefers {} when initializing
+  Date date2(30,4); //same effect, uses second constructor, but Stroustrup doesn't like () here.
 ```
 
 #### Key Reading

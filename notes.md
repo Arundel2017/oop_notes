@@ -459,7 +459,7 @@ v1 == v2        //vectors are equal if they are the same size and each element i
   int n = m; //error, no implicit conversion from Month to int
   m = 7; //error, can't assign an int to a Month
   std::cout << m; //error, no implicit conversion, << not defined for `Month`
-  std::cout << static_cast<std::underlying_type<OrderBookType>::type>(m) //ok
+  std::cout << static_cast<std::underlying_type<Month>::type>(m) //ok
   ```
 - The `class` denotes that the enumerators are in the scope of the enumeration, so to refer to `jan` you say `Month::jan`. No implicit conversion to ints.
 - This makes it fiddly to, for example, `cout` an enum class. You have to explicitly cast it to the underlying type. See eg this [Stack Overflow post](https://stackoverflow.com/questions/11421432/how-can-i-output-the-value-of-an-enum-class-in-c11)

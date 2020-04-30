@@ -46,7 +46,12 @@
     - [Supplementary Reading](#supplementary-reading-4)
     - [Core Guidelines](#core-guidelines-4)
     - [CPP Reference](#cpp-reference-5)
-  - [Classes](#classes)
+  - [Classes: Basic Syntax and Constructors](#classes-basic-syntax-and-constructors)
+    - [Points to Remember](#points-to-remember-8)
+    - [Key Reading](#key-reading-7)
+    - [Supplementary Reading](#supplementary-reading-5)
+    - [Core Guidelines](#core-guidelines-5)
+    - [CPP Reference](#cpp-reference-6)
 - [Topic 2c File Organization](#topic-2c-file-organization)
 
 ## Intro
@@ -451,6 +456,7 @@ v1 == v2        //vectors are equal if they are the same size and each element i
   #include <iostream>
   #include <type_traits>
   #include <map>
+  #include <string>
 
   enum class Month {
     jan =1, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec
@@ -467,8 +473,8 @@ v1 == v2        //vectors are equal if they are the same size and each element i
   int n = m; //error, no implicit conversion from Month to int
   m = 7; //error, can't assign an int to a Month
   std::cout << m; //error, no implicit conversion, << not defined for `Month`
-  std::cout << static_cast<std::underlying_type<Month>::type>(m) //ok, outputs '2'
-  std::cout << months[m] //ok, outputs "February"
+  std::cout << static_cast<std::underlying_type<Month>::type>(m); //ok, outputs '2'
+  std::cout << months[m]; //ok, outputs "February"
   ```
 - The `class` denotes that the enumerators are in the scope of the enumeration, so to refer to `jan` you say `Month::jan`. No implicit conversion to ints.
 - This makes it fiddly to, for example, `cout` an enum class. You have to explicitly cast it to the underlying type. See eg this [Stack Overflow post](https://stackoverflow.com/questions/11421432/how-can-i-output-the-value-of-an-enum-class-in-c11).
@@ -496,5 +502,68 @@ v1 == v2        //vectors are equal if they are the same size and each element i
 #### CPP Reference
 - [Enum declaration](https://en.cppreference.com/w/cpp/language/enum)
 
-### Classes
+### Classes: Basic Syntax and Constructors
+#### Points to Remember
+
+- A class is a **user-defined type** consisting of a set of **members**. The most common kinds of members are **data members** and **member functions**.
+- Members are accessed by using `.` for objects and `->` for pointers.
+- A class is a namespace containing its members.
+- The **public** members define a class's **interface**, while its **private** members detail its **implementation**.
+- A **struct** is a class where all members are by default public. By default members of a `class` are private.
+- The construct `class X {...};` is a **class definition**, often referred to as a **class declaration**.
+- `struct S {...};` is simply shorthand for `class S{public:...};`.
+- It is not a requirement to declare data first in a class definition before they are used in member functions. Often useful to show the functions first.
+- A **constructor** is a function that specifies how objects of a class are initialized. They are recognized by having the same name as the class itself.
+- When a class has a constructor, all objects of that class will by initialized by a constructor call. If that constructor requires arguments, those must be supplied.
+- By having multiple constructors with different arguments, we can create a variety of ways of initializing class objects, ie constructors can be *overloaded* like regular functions.
+- Here is an example `Date` class with private members and public constructors showing the syntax, including for default values in constructors:
+
+```C++
+  class Date {
+    int d,m,y; //these are private data members, can also specify `private:` to be explicit
+
+    public:
+
+    Date(int dd =0,int mm =0,int yy =0); //constructor for day,month,year, with defaults used in constructor below
+    Date(int dd,int mm); //constructor for day, month, assume current year, no defaults
+    Date(int); //constructor for day, assume current month and year
+    Date(); //default constructor, initialize to today
+    Date(const char*); //date from a string
+  }; //don't forget semi-colon!
+
+  Date::Date(int dd, int mm, int yy)
+  {
+    d = dd ? dd : today.d; //assume today has been created
+    m = mm ? mm : today.m;
+    y = yy ? yy : today.y;
+
+    //check date validity
+  }
+
+  Date::Date(int dd, int mm)
+  :y{today.y}, m{mm}, d{dd} //initializer list syntax
+  {
+    //check date validity
+  }
+```
+
+#### Key Reading
+- *Programming*, Sections 9.1 - 9.4.3 (pp 304 - 314) Ch. 9 evolves a date class, growing in complexity.
+- *C++*, Sections 16.1 - 16.2.5 (pp 449 - 457)
+
+#### Supplementary Reading
+- *Tour*, Sections 4.1 and 4.2 (pp 47 - 51)
+- *Primer*, Section 7.1.4, *Constructors* (pp 262 - 266)
+  -  Primer chapter on classes relies a lot on previous chapters so a bit hard to follow in general if you're not working through the book, the constructor section is good though.
+
+#### Core Guidelines
+- [Classes](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#S-class)
+- [Organize related data into structures (`struct` or `class`)](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rc-org)
+- [Use `class` not `struct` if there are invariants](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rc-struct)
+- [Use `class` not `struct` if there are any private members](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rc-class)
+- [Represent the distinction between *interface* and *implementation* in the class](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rc-interface)
+
+#### CPP Reference
+- [Classes](https://en.cppreference.com/w/cpp/language/classes)
+- [Default Constructor](https://en.cppreference.com/w/cpp/language/default_constructor)
 ## Topic 2c File Organization

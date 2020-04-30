@@ -450,19 +450,29 @@ v1 == v2        //vectors are equal if they are the same size and each element i
   ```C++
   #include <iostream>
   #include <type_traits>
+  #include <map>
 
   enum class Month {
     jan =1, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec
+  };
+
+  //use a map to create labels for the enumerators to print them
+  std::map<Month, std::string> months = {
+    {Month::jan, "January"},
+    {Month::feb, "February"},
+    ...
   };
 
   Month m = Month::feb; //good
   int n = m; //error, no implicit conversion from Month to int
   m = 7; //error, can't assign an int to a Month
   std::cout << m; //error, no implicit conversion, << not defined for `Month`
-  std::cout << static_cast<std::underlying_type<Month>::type>(m) //ok
+  std::cout << static_cast<std::underlying_type<Month>::type>(m) //ok, outputs '2'
+  std::cout << months[m] //ok, outputs "February"
   ```
 - The `class` denotes that the enumerators are in the scope of the enumeration, so to refer to `jan` you say `Month::jan`. No implicit conversion to ints.
-- This makes it fiddly to, for example, `cout` an enum class. You have to explicitly cast it to the underlying type. See eg this [Stack Overflow post](https://stackoverflow.com/questions/11421432/how-can-i-output-the-value-of-an-enum-class-in-c11)
+- This makes it fiddly to, for example, `cout` an enum class. You have to explicitly cast it to the underlying type. See eg this [Stack Overflow post](https://stackoverflow.com/questions/11421432/how-can-i-output-the-value-of-an-enum-class-in-c11).
+- Or you can create a map of labels if you want to print a string (see code example above).
 - The compiler will pick the value for each enumerator you don't specify, default starting at `0`, then incrementing by 1. Better to let the compiler pick values for you, though you can explicitly define each value.
 - You can also specify the underlying type of the enum, if you don't want an int, but this is generally avoided.
 

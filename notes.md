@@ -53,6 +53,12 @@
     - [Core Guidelines](#core-guidelines-5)
     - [CPP Reference](#cpp-reference-6)
 - [Topic 2c File Organization](#topic-2c-file-organization)
+  - [Class Structure and Header Files](#class-structure-and-header-files)
+    - [Points to Remember](#points-to-remember-9)
+    - [Key Reading](#key-reading-8)
+    - [Supplementary Reading](#supplementary-reading-6)
+    - [Core Guidelines](#core-guidelines-6)
+    - [CPP Reference](#cpp-reference-7)
 
 ## Intro
 
@@ -79,13 +85,14 @@ And references to the following resources:
 - To use a type from a **namespace** you need to `#include` it at the start of your file, and either refer to it using namespace notation `std::cout` or bring the namespace into scope `using namespace std;` (can lead to name clashes so avoid where possible) or the particular type `using std::cout;` then just `cout` will work.
 - C++ also allows **User Defined Types**, also known as **Classes**, which are *first class citizens*.
 - Before an object can be used it must be **initialized** which allocates the memory correctly depending on type.
-- A named variable can only be used if it is in **scope**. There are four levels of scope:
+- A named variable can only be used if it is in **scope**.
+- Scope is a region of program text. A name is declared in a scope, and is valid (or "in scope") from the point of declaration to the end of that scope. There are four levels of scope:
   - **Local Scope** - a name declared in a function, lambda or local block `{}`, includes function parameters.
   - **Class Scope** - a name is called a **member name** if it is declared in a class, outside any function or lambda.
   - **Namespace Scope** - a name is called a **namespace member name** if declared in a namespace outside a function/lambda.
   - **Global Scope** - a name declared outside any construct.
-- variables can be made *immutable* by declaring them as `const` (meaning "I promise not to change this"), or `constexpr` (meaning "to be evaluated at compile time"), the difference is when the value is calculated either run-time or compile time respectively.
-- in variable declarations `*` signifies a **pointer** and `&` signifies a **reference**. Both are ways to denote an object in memory without evaluating or copying it. The syntax to access the values is different (see *Tour*, p. 11)
+- Variables can be made *immutable* by declaring them as `const` (meaning "I promise not to change this"), or `constexpr` (meaning "to be evaluated at compile time"), the difference is when the value is calculated either run-time or compile time respectively.
+- In variable declarations `*` signifies a **pointer** and `&` signifies a **reference**. Both are ways to denote an object in memory without evaluating or copying it. The syntax to access the values is different (see *Tour*, p. 11)
 
 
 
@@ -533,7 +540,7 @@ v1 == v2        //vectors are equal if they are the same size and each element i
 
   Date::Date(int dd, int mm, int yy)
   {
-    d = dd ? dd : today.d; //assume today has been created
+    d = dd ? dd : today.d; //assume today has been created with public members
     m = mm ? mm : today.m;
     y = yy ? yy : today.y;
 
@@ -570,3 +577,61 @@ v1 == v2        //vectors are equal if they are the same size and each element i
 - [Classes](https://en.cppreference.com/w/cpp/language/classes)
 - [Default Constructor](https://en.cppreference.com/w/cpp/language/default_constructor)
 ## Topic 2c File Organization
+
+### Class Structure and Header Files
+
+#### Points to Remember
+- C++ allows for **separate compilation** where user code only sees the declarations of the classes and functions it uses (their *interfaces*).
+- The full definitions are then in separate source code files and can be compiled separately, minimizing compile times.
+- Typically a class is written in two files:
+  -  a **header file** `Class.h` containing the class definition and declarations of its member variables and functions.
+  -  an **implementation file** `Class.cpp`, with the full definitions of the class's member functions.
+- For what can and can't be included in header files, see *C++*, p. 424.
+- A `.cpp` file that is compiled by itself is called a **translation unit**, a program might contain thousands of units.
+- The **One-Definition Rule** states that classes can only be defined once in a translation unit. For the full rule see *CPP*, p. 425.
+- The source code fragments are pulled together during **pre-processing**, a stage in building the program that executes before compilation, using the `#include` mechanism.
+
+```C++
+  #include "Class.h" //use quotes for class headers in current directory
+  #include <iostream> //use <> for standard include directory, eg standard library.
+  #include < string > //error, whitespace is significant
+  #include " Class.h " //error whitespace is significant here too.
+```
+- `#include` is equivalent to pasting the text from the header file, so bringing all the names into scope.
+- Because each header represents a class as a self-contained unit, there can be a lot of redundancy in `#include` statements. We can also quickly get errors as class definitions are `#include`d more than once in the same compilation unit, which breaks the *One-Definition Rule*.
+- To get around this we use **header guards**, also called **include guards**. These ensure header files are only included once in a translation unit. There are two common ways:
+
+```C++
+#pragma once
+//rest of the header here
+```
+- `#pragma once` is non-standard, but supported by most modern compilers. See [CPP Reference](https://en.cppreference.com/w/cpp/preprocessor/impl). Alternatively:
+
+```C++
+#ifndef LIBRARY_FILENAME_H //preprocessor checks if variable is not defined, if so continues to execute
+#define LIBRARY_FILENAME_H //define the variable so it is in scope if encountered again. Use ALL_CAPS, and a long name to avoid clashes.
+// contents of the header
+#endif /* LIBRARY_FILENAME_H */ //end the conditional and resume execution
+```
+#### Key Reading
+- *C++*:
+  - Section 15.2.2 - 15.2.4, *Header Files*, *The One-Definition Rule*, and *Standard-Library Headers* (pp 424 - 428)
+  - Section 15.3, *Using Header Files* (pp 431 - 441)
+
+#### Supplementary Reading
+- *Tour*, Section 3.2, *Separate Compilation* (pp 30 - 32)
+- *Primer*, Section 2.6.3, *Writing our Own Header Files* (pp 76 - 77)
+- *Programming*, Section 8.3, *Header Files* (pp 264 - 266)
+
+#### Core Guidelines
+- [Source Files](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#S-source)
+- [Use header files for all declarations used in multiple files](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rs-declaration-header)
+- [Header files should be self-contained](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rs-contained)
+- [Use `#include` guards on all header files](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rs-guards)
+- [Put `#include` at the top of files](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rs-include-order)
+- [Avoid cyclic dependencies if possible](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rs-cycles)
+
+#### CPP Reference
+- [Source file inclusion](https://en.cppreference.com/w/cpp/preprocessor/include)
+- [#pragma once](https://en.cppreference.com/w/cpp/preprocessor/impl)
+- [preprocessor conditional inclusion - `ifdef` etc](https://en.cppreference.com/w/cpp/preprocessor/conditional)

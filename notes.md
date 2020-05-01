@@ -48,6 +48,7 @@
     - [CPP Reference](#cpp-reference-5)
   - [Classes: Basic Syntax and Constructors](#classes-basic-syntax-and-constructors)
     - [Points to Remember](#points-to-remember-8)
+    - [Member Functions](#member-functions)
     - [Key Reading](#key-reading-7)
     - [Supplementary Reading](#supplementary-reading-5)
     - [Core Guidelines](#core-guidelines-5)
@@ -556,15 +557,29 @@ v1 == v2        //vectors are equal if they are the same size and each element i
   Date date1 {30,4,2020}; // uses first constructor, NB Stroustrup prefers {} when initializing
   Date date2(30,4); //same effect, uses second constructor, but Stroustrup doesn't like () here.
 ```
-
+#### Member Functions
+- We define and declare member functions similarly to ordinary functions. Member functions *must* be declared within the class. They *may* be defined inside the class itself or outside the class body using the namespace: `Class::memberFunction(){};`.
+- See section on header files for usual way of declaring and defining member functions.
+- Almost always, when a member function is called, it is called on behalf of an object (an instance of the class).
+- When a member function is called an extra, implicit parameter is initialized, called `this`. `this` is a const pointer to the address of the object on which the function was evoked.
+- Inside a member function we can then refer directly to members of the object without any access operator or namespace. It will be interpreted as an implicit reference to `this`.
+- So an ordinary member function declaration specifies three distinct things:
+  - The function can access the private parts of the class declaration.
+  - The function is in the scope of the class.
+  - The function must be invoked on an object (has a `this` pointer).
+- You can declare a member function `static` to give it the first two properties only. And you can declare a nonmember function a `friend` to give it the first property. (This is covered later).
+- The compiler processes classes in two steps. First member declarations are compiled, and then member function bodies are processed. So member functions can use other members in the class regardless of where those members are declared.
 #### Key Reading
-- *Programming*, Sections 9.1 - 9.4.3 (pp 304 - 314) Ch. 9 evolves a date class, growing in complexity.
-- *C++*, Sections 16.1 - 16.2.5 (pp 449 - 457)
+- *Programming*, Chapter 9, *Technicalities: Classes, etc* (pp 303 - 342) Ch. 9 evolves a date class, growing in complexity.
+- *C++*, Sections 16.1 - 16.2.5 (pp 449 - 457), and p. 571.
 
 #### Supplementary Reading
 - *Tour*, Sections 4.1 and 4.2 (pp 47 - 51)
-- *Primer*, Section 7.1.4, *Constructors* (pp 262 - 266)
-  -  Primer chapter on classes relies a lot on previous chapters so a bit hard to follow in general if you're not working through the book, the constructor section is good though.
+- *Primer*:
+  -  Section 7.1.2, on member functions (pp 256 - 260)
+  -  Section 7.1.3, on class helper functions (pp 260 - 262)
+  -  Section 7.1.4, *Constructors* (pp 262 - 266)
+  -  NB *Primer* chapter on classes relies a lot on a case study built up over previous chapters so a bit hard to follow if you're not working through the book.
 
 #### Core Guidelines
 - [Classes](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#S-class)
@@ -588,7 +603,7 @@ v1 == v2        //vectors are equal if they are the same size and each element i
   -  an **implementation file** `Class.cpp`, with the full definitions of the class's member functions.
 - For what can and can't be included in header files, see *C++*, p. 424.
 - A `.cpp` file that is compiled by itself is called a **translation unit**, a program might contain thousands of units.
-- The **One-Definition Rule** states that classes can only be defined once in a translation unit. For the full rule see *CPP*, p. 425.
+- The **One-Definition Rule** states that classes can only be defined once in a translation unit. For the full rule see *C++*, p. 425.
 - The source code fragments are pulled together during **pre-processing**, a stage in building the program that executes before compilation, using the `#include` mechanism.
 
 ```C++
@@ -597,8 +612,8 @@ v1 == v2        //vectors are equal if they are the same size and each element i
   #include < string > //error, whitespace is significant
   #include " Class.h " //error whitespace is significant here too.
 ```
-- `#include` is equivalent to pasting the text from the header file, so bringing all the names into scope.
-- Because each header represents a class as a self-contained unit, there can be a lot of redundancy in `#include` statements. We can also quickly get errors as class definitions are `#include`d more than once in the same compilation unit, which breaks the *One-Definition Rule*.
+- `#include` is equivalent to pasting the text from the header file, bringing all the names into scope.
+- Because each header represents a class as a self-contained unit, there can be a lot of redundancy in `#include` statements. We can also quickly get errors as class definitions are `#include`d more than once in the same translation unit, which breaks the *One-Definition Rule*.
 - To get around this we use **header guards**, also called **include guards**. These ensure header files are only included once in a translation unit. There are two common ways:
 
 ```C++

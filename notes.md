@@ -60,6 +60,25 @@
     - [Supplementary Reading](#supplementary-reading-6)
     - [Core Guidelines](#core-guidelines-6)
     - [CPP Reference](#cpp-reference-7)
+- [Topic 3: File Handling, Input Streams, and Exceptions](#topic-3-file-handling-input-streams-and-exceptions)
+  - [File Handling](#file-handling)
+    - [Points to Remember](#points-to-remember-10)
+    - [File Modes](#file-modes)
+    - [Key Reading](#key-reading-9)
+    - [Supplementary Reading](#supplementary-reading-7)
+    - [CPP Reference](#cpp-reference-8)
+  - [Input Streams and Tokenizing](#input-streams-and-tokenizing)
+    - [Points to Remember](#points-to-remember-11)
+    - [Key Reading](#key-reading-10)
+    - [Supplementary Reading](#supplementary-reading-8)
+    - [Core Guidelines](#core-guidelines-7)
+    - [CPP Reference](#cpp-reference-9)
+  - [Exception Handling](#exception-handling)
+    - [Points to Remember](#points-to-remember-12)
+    - [Key Reading](#key-reading-11)
+    - [Supplementary Reading](#supplementary-reading-9)
+    - [Core Guidelines](#core-guidelines-8)
+    - [CPP Reference](#cpp-reference-10)
 
 ## Intro
 
@@ -559,7 +578,7 @@ v1 == v2        //vectors are equal if they are the same size and each element i
 ```
 #### Member Functions
 - We define and declare member functions similarly to ordinary functions. Member functions *must* be declared within the class. They *may* be defined inside the class itself or outside the class body using the namespace: `Class::memberFunction(){};`.
-- See section on header files for usual way of declaring and defining member functions.
+- See section on [header files](#points-to-remember-9) for the usual way of declaring and defining member functions.
 - Almost always, when a member function is called, it is called on behalf of an object (an instance of the class).
 - When a member function is called an extra, implicit parameter is initialized, called `this`. `this` is a const pointer to the address of the object on which the function was evoked.
 - Inside a member function we can then refer directly to members of the object without any access operator or namespace. It will be interpreted as an implicit reference to `this`.
@@ -650,3 +669,105 @@ v1 == v2        //vectors are equal if they are the same size and each element i
 - [Source file inclusion](https://en.cppreference.com/w/cpp/preprocessor/include)
 - [#pragma once](https://en.cppreference.com/w/cpp/preprocessor/impl)
 - [preprocessor conditional inclusion - `ifdef` etc](https://en.cppreference.com/w/cpp/preprocessor/conditional)
+
+## Topic 3: File Handling, Input Streams, and Exceptions
+
+### File Handling
+
+#### Points to Remember
+- In C++, a **file** is an abstraction on what the OS provides. It is a sequence of bytes numbered from 0 upwards.
+- In C++, the assumption is that these "bytes on disk" are characters in the usual character set. So by default a **file stream** interprets a sequence of bytes as a sequence of characters and converts them to objects in memory.
+- The `<fstream>` header defines three types to use for file IO. `ifstream` to read from a file, `ofstream` to write to a file, and `fstream` to read and write to the same file.
+- These types inherit the same operations as the standard streams `cin` and `cout`, eg `<<` and `>>`. They have the same stream states.
+- They also have custom methods for managing files, used as follows:
+
+```C++
+#include <fstream>
+#include <string>
+//using a "example.csv" file in the same directory as an example
+std::string file = "example.csv"
+
+
+std::ifstream inputFS; //creates an input file stream
+inputFS.open("example.csv") //opens the file and binds it to inputFS
+
+std::ifstream inputFS{"example.csv"} // equivalent to above, using constructor to open file
+
+inputFS.close() //closes the file
+inputFS.is_open() //returns true if file has been opened successfully and not closed.
+```
+
+- Once a file has been bound to a stream it must be closed before that stream can be bound to another file.
+- If the call to `open` fails, the stream `failbit` will be set, which you can use to check whether it is safe to proceed:
+
+```C++
+std::ifstream inputFS{"example.csv"}
+
+if(inputFS) {...} //only execute if file has opened
+
+if(inputFS.is_open()) {...} //alternative, does the same thing
+
+if(!inputFS) {error()...} //Stroustrup's preference, throw the error, then main logic is not wrapped in `if`.
+```
+- When a filestream object goes out of scope it is destroyed and `close` is called automatically.
+- When an output file is closed its buffer is flushed.
+- Opening a file implicitly using the stream constructor, and allowing the scope of the stream to close it is the ideal. (Stroustrup, *Programming*, p. 351)
+#### File Modes
+- Each stream has an associated **file mode** that represents how the file may be used.
+- The full list of file modes is:
+  - `in` - Open for input (not available on `ofstream` objects)
+  - `out` - Open for output (not available on `ifstream` objects)
+  - `app` - "append". Seek to the end of the file before every write
+  - `ate` - "at end". Seek to the end of the file immediately after open
+  - `trunc` - Truncate the file to 0 length
+  - `binary` - Do IO operations in binary mode, when the default 'char' based IO is not appropriate.
+- We can supply the file mode after the filename string when we call `open`, the mode is set again every time the file is opened.
+- NB if we open a file for output it is opened in `trunc` mode by default, so the contents are discarded:
+
+```C++
+#include <fstream>
+
+std::ofstream output{"example.csv"} //contents of "example.csv" are discarded
+
+std::ofstream output{"example.csv", std::ofstream::app} //preserves the file contents, appends to end of file
+
+std::fstream output{"example.csv"} //preserves file content, file available for input and output
+
+```
+
+#### Key Reading
+- *Primer*: Section 8.2, *File Input and Output* (pp 316 - 320)
+- *Programming*:
+  - Sections 10.3 - 10.5, *Files*, *Opening a file*, *Reading and writing a file* (pp 349 - 354)
+  - Section 11.3, *File opening and positioning* (pp 388 - 394)
+#### Supplementary Reading
+- *Tour*: Section 10.7, *File Streams* (p. 130)
+- *CPP*: Section 38.2.1, *File Streams* (pp 1076 - 1078)
+
+#### CPP Reference
+- [`<fstream>` Header](https://en.cppreference.com/w/cpp/header/fstream)
+- [`ifstream` - File input stream](https://en.cppreference.com/w/cpp/io/basic_ifstream)
+- [`ofstream` - File output stream](https://en.cppreference.com/w/cpp/io/basic_ofstream)
+- [`fstream` - File I/O stream](https://en.cppreference.com/w/cpp/io/basic_fstream)
+- [`open` a file for input](https://en.cppreference.com/w/cpp/io/basic_ifstream/open)
+### Input Streams and Tokenizing
+#### Points to Remember
+
+#### Key Reading
+
+#### Supplementary Reading
+
+#### Core Guidelines
+
+#### CPP Reference
+
+### Exception Handling
+#### Points to Remember
+
+#### Key Reading
+
+#### Supplementary Reading
+
+#### Core Guidelines
+
+#### CPP Reference

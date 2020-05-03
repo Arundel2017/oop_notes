@@ -53,7 +53,7 @@
     - [Supplementary Reading](#supplementary-reading-5)
     - [Core Guidelines](#core-guidelines-5)
     - [CPP Reference](#cpp-reference-6)
-- [Topic 2c File Organization](#topic-2c-file-organization)
+- [Topic 2c Source File Organization](#topic-2c-source-file-organization)
   - [Class Structure and Header Files](#class-structure-and-header-files)
     - [Points to Remember](#points-to-remember-9)
     - [Key Reading](#key-reading-8)
@@ -610,7 +610,7 @@ v1 == v2        //vectors are equal if they are the same size and each element i
 #### CPP Reference
 - [Classes](https://en.cppreference.com/w/cpp/language/classes)
 - [Default Constructor](https://en.cppreference.com/w/cpp/language/default_constructor)
-## Topic 2c File Organization
+## Topic 2c Source File Organization
 
 ### Class Structure and Header Files
 
@@ -676,7 +676,7 @@ v1 == v2        //vectors are equal if they are the same size and each element i
 
 #### Points to Remember
 - In C++, a **file** is an abstraction on what the OS provides. It is a sequence of bytes numbered from 0 upwards.
-- In C++, the assumption is that these "bytes on disk" are characters in the usual character set. So by default a **file stream** interprets a sequence of bytes as a sequence of characters and converts them to objects in memory.
+- In C++, the assumption is that these "bytes on disk" are characters in the usual character set. So by default a **file stream** interprets a sequence of bytes as a sequence of characters and converts them to objects in memory (or vice versa).
 - The `<fstream>` header defines three types to use for file IO. `ifstream` to read from a file, `ofstream` to write to a file, and `fstream` to read and write to the same file.
 - These types inherit the same operations as the standard streams `cin` and `cout`, eg `<<` and `>>`. They have the same stream states.
 - They also have custom methods for managing files, used as follows:
@@ -746,20 +746,105 @@ std::fstream output{"example.csv"} //preserves file content, file available for 
 
 #### CPP Reference
 - [`<fstream>` Header](https://en.cppreference.com/w/cpp/header/fstream)
+- [Stream states](https://en.cppreference.com/w/cpp/io/ios_base/iostate)
 - [`ifstream` - File input stream](https://en.cppreference.com/w/cpp/io/basic_ifstream)
 - [`ofstream` - File output stream](https://en.cppreference.com/w/cpp/io/basic_ofstream)
 - [`fstream` - File I/O stream](https://en.cppreference.com/w/cpp/io/basic_fstream)
 - [`open` a file for input](https://en.cppreference.com/w/cpp/io/basic_ifstream/open)
 ### Input Streams and Tokenizing
 #### Points to Remember
+- Remember the fundamental purpose of an IO stream is to translate between a sequence of bytes (usually) interpreted as standard ASCII characters ('a', '3', '\n' etc) and objects in memory of any type.
+- The standard stream libraries provide two main tool-kits to do this:
+  - **Formatted operations** are recommended, they come with a lot of support for error handling and formatting built-in types.
+  - **Unformatted operations** provide lower-level control of how characters are interpreted, and should be used only if necessary, a lot of room for error.
+- **Formatted input** is provided by two main operators:
+  - ``inputStream >> x`` reads from the stream according to the type of `x`. The `>>` operator can be *overloaded* to handle user-defined types.
+  - `getline(inputStream, s)` reads a line from `inputStream` into a string `s`. It terminates on the `\n` character, discards it from the stream, and does not store it in `s`.
+- NB almost all formatted IO operations and methods return a reference to the stream so can be chained together.
+- For unformatted input operations and their challenges see eg *C++*, p. 1083.
+- `>>` will keep reading characters until it encounters a character that doesn't fit the type it is reading into. For example:
+
+```C++
+
+#include <iostream>
+#include <string>
+
+using std::string;
+using std::cin;
+
+//hypothetical input of "12345a 23.415"
+
+int x;
+string s, s2;
+double d;
+cin >> x; // x will be 12345
+// input stream will now be "a 23.415"
+cin >> s; // s will be "a", formatted string input is terminated on whitespace by default
+// input stream will now be " 23.415"
+cin >> d; // d will be "23.415", leading whitespace is ignored
+
+//alternatively read a whole line of input, input is "12345a 23.415" terminated by '\n'
+
+std::getline(cin, s2); //s2 is "12345a 23.415"
+```
+
+- On when to use `>>` and when to use `getline()` see *Programming*, pp 395 - 396.
+- Strings themselves can be used as input streams using the `<sstream>` library.
+- The unformatted version of `getline()` can be called with a delimiter as a third argument.
+- These could be combined to grab a line from a CSV file as a string, and then use that line as a input stream for parsing with the `,` separator (bit fiddly though and no error handling, better ways of doing this, you'd have to use character level manipulation to handle the `,` in places). Shown as an example of mixing formatted and unformatted input methods:
+
+```C++
+#include <iostream>
+#include <string>
+#include <sstream>
+
+using std::string;
+
+    string s = "Bob,Jones,32,5"; //line from csv, result of calling getline() on the csv file stream
+
+    std::istringstream stringStream{s}; //stringStream is now an input stream consisting of s.
+
+    string firstName,
+        secondName;
+    int age, children;
+
+    getline(stringStream, firstName, ',');  //terminates on ',' and discards
+    getline(stringStream, secondName, ','); //NB preserves any leading whitespace
+    stringStream >> age;                    //gets last value, ignores trailing ',' but would put back on stream
+    stringStream.ignore(1, ',');            //ignores single character
+    stringStream >> children;
+
+```
+- NB a lot of formatting methods are more useful for output processing than input, this is covered later.
+
 
 #### Key Reading
+- *Programming*:
+  - Chapter 6 is an extended deep dive on approaching handling input by building a command line calculator, implementing a custom `Token` class for tokenization. A very different approach to the UoL module, worth following through.
+  - Chapters 10 and 11 are also deep dives into I/O. Sections particularly relevant are:
+    - Section 10.7, *Reading a single value* (pp 358 - 363)
+    - Sections 10.9, 10.10, and 10.11, *User-defined input operators*, *A standard input loop*, and *Reading a structured file* (pp 365 - 376)
+    - Section 11.1, *Regularity and Irregularity* (p. 380)
+    - Sections 11.4 - 11.7, *String Streams*, *Line-oriented input*, *Character classificaitons*, *Using nonstandard separators*
+- *Primer*: Section 17.5.1 and 17.4.2, *Formatted and unformatted Input/Output operations* (pp 753 - 763) (includes stuff on formatting output not relevant here)
 
 #### Supplementary Reading
+- *C++*:
+  - Section 38.4.1, *Input Operations* (pp 1081 - 1084)
+  - Section 38.6, *Buffering* (pp 1100 - 1105)
+- *Primer*: Section 8.3, *String Streams* (pp 321 - 323)
+- *Programming*:
+  - Section B.7.3, *Input Operations* (p. 1172)
+  - Section B.8.1, *Character Classification (p. 1175)
 
 #### Core Guidelines
+- [Use character level input only when necessary](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rio-low)
+- [Always handle ill-formed input](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rio-validate)
 
 #### CPP Reference
+- [`>>` Operator](https://en.cppreference.com/w/cpp/io/basic_istream/operator_gtgt)
+- [getline() Template](https://en.cppreference.com/w/cpp/string/basic_string/getline)
+- [ASCII Chart](https://en.cppreference.com/w/cpp/language/ascii)
 
 ### Exception Handling
 #### Points to Remember

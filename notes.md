@@ -75,6 +75,9 @@
     - [CPP Reference](#cpp-reference-9)
   - [Exception Handling](#exception-handling)
     - [Points to Remember](#points-to-remember-12)
+    - [Throwing an Exception](#throwing-an-exception)
+    - [Catching an Exception](#catching-an-exception)
+    - [Exception Classes](#exception-classes)
     - [Key Reading](#key-reading-11)
     - [Supplementary Reading](#supplementary-reading-9)
     - [Core Guidelines](#core-guidelines-8)
@@ -173,10 +176,10 @@ And references to the following resources:
 
 #### Points to Remember
 
-- The standard library defines 4 IO objects. `cin` and `cout` are standard input and output. `cerr` is the **standard error** stream, and `clog` is the **standard log** for execution info.
+- The standard library `<iostream>` defines 4 I/O objects. `cin` and `cout` are standard input and output. `cerr` is the **standard error** stream, and `clog` is the **standard log** for execution info.
 - Usually the system associates the streams with the window the program is executed. So data are read in and written out to the same window as program execution by default.
 - `<<` takes two operands, left operand is an output stream, right operand is a value. It returns its left-hand operand, allowing chaining.
-- Streams are buffered. *Flushing* the output stream prints it to the window immediately. You can flush with `std::endl`
+- Streams are buffered. *Flushing* the output stream prints it to the window immediately. You can flush with `std::endl` or `std::flush`
 - NB if you don't flush a statement while debugging it might be left in the buffer when the program crashes.
 - `>>` behaves like `<<` but takes an object as its right operand to store the input.
 - `>>` is type sensitive, it reads according to the type of variable you are reading into.
@@ -687,20 +690,20 @@ v1 == v2        //vectors are equal if they are the same size and each element i
 //using a "example.csv" file in the same directory as an example
 std::string file = "example.csv"
 
-
 std::ifstream inputFS; //creates an input file stream
-inputFS.open("example.csv") //opens the file and binds it to inputFS
+inputFS.open(file) //opens the file and binds it to inputFS
 
-std::ifstream inputFS{"example.csv"} // equivalent to above, using constructor to open file
+std::ifstream inputFS2{file}; // equivalent to above, using constructor to open file
 
-inputFS.close() //closes the file
-inputFS.is_open() //returns true if file has been opened successfully and not closed.
+inputFS.close(); //closes the file
+inputFS.is_open(); //returns true if file has been opened successfully and not closed.
 ```
 
 - Once a file has been bound to a stream it must be closed before that stream can be bound to another file.
 - If the call to `open` fails, the stream `failbit` will be set, which you can use to check whether it is safe to proceed:
 
 ```C++
+
 std::ifstream inputFS{"example.csv"}
 
 if(inputFS) {...} //only execute if file has opened
@@ -753,7 +756,7 @@ std::fstream output{"example.csv"} //preserves file content, file available for 
 - [`open` a file for input](https://en.cppreference.com/w/cpp/io/basic_ifstream/open)
 ### Input Streams and Tokenizing
 #### Points to Remember
-- Remember the fundamental purpose of an IO stream is to translate between a sequence of bytes (usually) interpreted as standard ASCII characters ('a', '3', '\n' etc) and objects in memory of any type.
+- Remember the fundamental purpose of an IO stream is to translate between a sequence of bytes (usually) interpreted as standard [ASCII characters](https://en.cppreference.com/w/cpp/language/ascii) ('a', '3', '\n' etc) and objects in memory of any type.
 - The standard stream libraries provide two main tool-kits to do this:
   - **Formatted operations** are recommended, they come with a lot of support for error handling and formatting built-in types.
   - **Unformatted operations** provide lower-level control of how characters are interpreted, and should be used only if necessary, a lot of room for error.
@@ -822,6 +825,7 @@ using std::string;
 - *Programming*:
   - Chapter 6 is an extended deep dive on approaching handling input by building a command line calculator, implementing a custom `Token` class for tokenization. A very different approach to the UoL module, worth following through.
   - Chapters 10 and 11 are also deep dives into I/O. Sections particularly relevant are:
+    - Section 10.6, *I/O error handling* (pp 354 - 358)
     - Section 10.7, *Reading a single value* (pp 358 - 363)
     - Sections 10.9, 10.10, and 10.11, *User-defined input operators*, *A standard input loop*, and *Reading a structured file* (pp 365 - 376)
     - Section 11.1, *Regularity and Irregularity* (p. 380)
@@ -835,7 +839,7 @@ using std::string;
 - *Primer*: Section 8.3, *String Streams* (pp 321 - 323)
 - *Programming*:
   - Section B.7.3, *Input Operations* (p. 1172)
-  - Section B.8.1, *Character Classification (p. 1175)
+  - Section B.8.1, *Character Classification* (p. 1175)
 
 #### Core Guidelines
 - [Use character level input only when necessary](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rio-low)
@@ -848,11 +852,100 @@ using std::string;
 
 ### Exception Handling
 #### Points to Remember
+- An **exception** is a run-time anomaly, such as losing a database connection or receiving bad input, that is outside the normal functioning of a program. Managing exceptions is one of the hardest parts of program design.
+- **Exception handling** allows separately developed parts of a program to communicate about and handle problems that occur at run time, separating problem detection from detection resolution.
+- This is valuable, because the detecting part might not be best placed to decide how to resolve the situation.
+- There are three main building blocks in C++ for exception handling:
+  - **`throw` expressions** which the detecting part uses to signal that it encountered a problem. A `throw` **raises** an exception.
+  - **`try` blocks** which the handling part uses to deal with an exception. Also referred to as **exception handlers**. They consist of the `try` keyword followed by one or more `catch` clauses.
+  - A set of **exception classes** that hare used to pass information about what happened from a `throw` to an associated `catch`.
+- Error handling in general is a huge topic. On when to use exceptions and when to use other tools, see *Tour*, p. 39.
+- It is also strongly linked to safe resource management, see the discussion of *RAII (Resource Acquisition Is Initialization)* in *Tour*, p. 72.
+#### Throwing an Exception
 
+- When a function detects a problem it *throws* or *raises* an exception using the [`throw` keyword](https://en.cppreference.com/w/cpp/language/throw), followed by an expression. The type of the expression determines what kind of exception is thrown. For example:
+
+```C++
+if(varA != varB)
+  throw runtime_error("Your variables don't match!");
+else
+  //all is fine, normal logic
+```
+- When a `throw` is executed, any statements following the `throw` are not executed, instead control is transferred to a matching `catch` block (if any). The catch might be local to the same function or a direct or indirect caller. So think of `throw` as like a `return` statement.
+- After an exception has been thrown, the current function is suspended and the search for a matching catch clause by **unwinding** the execution stack, looking up the chain of nested function calls until a `catch` clause for the exception is found.
+- If a matching `catch` is found, that `catch` is entered and the program executes the code inside. It then continues execution immediately after the last `catch` clause associated with that try block.
+- If no matching `catch` is found the program calls the library `terminate` function, and excecution is stopped. Precise behaviour of `terminate` is system-dependent.
+- Because normal execution is halted immediately an exception is thrown:
+  - Functions along the chain may be prematurely exited
+  - Objects are automatically destroyed during stack unwinding
+  - Where objects have a destructor, those are executed automatically
+  - If thrown during a constructor, the object will be destroyed
+  - If thrown during the creation of a container (eg vector), the container will be destroyed.
+  - This is why we use constructors to allocate resources rather than doing it manually, to ensure proper destruction.
+- Programs that properly clean up during exception handling and avoid resource leaks etc are called **exception safe**.
+- Sometimes a single `catch` might not completely handle an exception, it can **re-throw** the exception by using the `throw` keyword with no following expression: `throw;`it can modify the exception object (by reference) before the re-throw.
+
+#### Catching an Exception
+- The general form of a [try/catch block](https://en.cppreference.com/w/cpp/language/try_catch) is:
+
+```C++
+try {
+  //program logic
+  //NB varibles declared here are inaccessible within catch blocks
+} catch (exception-declaration) {
+  //handler-statements
+} catch (exception-declaration) {
+  //handler-statements
+} //program continues...
+```
+
+- The **exception declaration** in a catch clause looks like a function parameter list with exactly one parameter, the type of the declaration determines what kinds of exceptions the handler can catch.
+- Ordinarily a catch takes an exception type by reference.
+- The catch that is found, going up the execution stack and through the list of catch blocks at each level, is the first one that matches the exception at all.
+- So generally write specialized catch blocks first, before more general ones.
+- You can catch all exceptions as follows: `catch (...) {//handle anything}`. Any `catch` statements following this in a block will never be matched. Often used to do some tidying and then rethrow.
+
+#### Exception Classes
+
+- The C++ library defines several classes it uses to report problems that can be used in our programs. Several key ones are defined in the `<stdexcept>` header.
+- These include `runtime_error`, `range_error`, `invalid_argument`, see *Primer*, p. 197 for full list.
+- Library exception classes have only a few operations, you can create, copy and assign objects of any of the types.
+- Most of the exception types *must* be initialized from a string containing more info. IE `runtime_error()` would error, no default initializer, but `runtime_error("my error message")` is OK.
+- The exception types define a single operation named `what`, that takes no arguments and returns a C-string with info on the exception thrown. Often the intializer string if applicable. eg:
+
+```C++
+catch (runtime_error& e) {
+  cout << e.what() << '\n';
+}
+```
+- It is possible to define your own exception types, freestanding or inheriting from the standard library types. For discussion and examples see *Primer*, pp 782 - 784.
 #### Key Reading
 
-#### Supplementary Reading
+- *Primer*:
+  - Section 5.6, *Try Blocks and Exception Handling* (pp 193 - 198)
+  - Section 18.1, *Exception Handling* (pp 772 - 785)
+- *Programming*:
+  - Section 5.5, *Run-time errors* (pp 140 - 146)
+  - Section 5.6, *Exceptions* (pp 146 - 154)
 
+#### Supplementary Reading
+- *Tour*:
+  - Section 3.5, *Error Handling* (pp 35 - 40)
+- *C++*: Chapter 13, *Exception Handling* (pp 343 - 387).
+  - Very deep dive, see especially:
+    - Section 13.5, *Throwing and Catching Exceptions*, pp 363 - 374
+    - *Advice*, p. 387
+    - *Traditional Error Handling*, pp 345 - 346
+    - *Exception Guarantees*, pp 353 - 354
 #### Core Guidelines
+- [Error Handling](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#S-errors)
+- [Throw an exception to indicate a function cannot complete its task](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Re-throw)
+- [Design error handling around *invariants*](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Re-design-invariants)
+- [Use RAII to avoid resource leaks](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Re-raii)
+- [Properly order your catch clauses](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Re_catch)
 
 #### CPP Reference
+- [Exceptions overview](https://en.cppreference.com/w/cpp/language/exceptions)
+- [Exception types](https://en.cppreference.com/w/cpp/error/exception)
+- [`throw` expression](https://en.cppreference.com/w/cpp/language/throw)
+- [`try` block](https://en.cppreference.com/w/cpp/language/try_catch)

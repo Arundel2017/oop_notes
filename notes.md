@@ -810,6 +810,7 @@ std::getline(cin, s2); //s2 is "12345a 23.415"
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <vector>
 
 using std::string;
 
@@ -827,6 +828,16 @@ using std::string;
     stringStream.ignore(1, ',');            //ignores single character
     stringStream >> children;
 
+    //better way, just tokenise to strings and then validate the tokens:
+
+    string s2 = "Fred,Flintstone,32,2";
+
+    std::istringstream ss2{s2};
+    std::vector<string> tokens;
+
+    for(string token; getline(ss2,token,','); ) {
+        tokens.push_back(token);
+    } //tokens now has a set of fields in the csv line handle validation elsewhere
 ```
 - NB a lot of formatting methods are more useful for output processing than input, this is covered later.
 
@@ -1071,5 +1082,5 @@ std::sort(myVector.begin(),myVector.end(),greaterThan) //sorts in descending ord
 
 #### CPP Reference
 - [`sort()`](https://en.cppreference.com/w/cpp/algorithm/sort)
-- [`stable_sort()](https://en.cppreference.com/w/cpp/algorithm/stable_sort)
-- [`partial_sort()](https://en.cppreference.com/w/cpp/algorithm/partial_sort)
+- [`stable_sort()`](https://en.cppreference.com/w/cpp/algorithm/stable_sort)
+- [`partial_sort()`](https://en.cppreference.com/w/cpp/algorithm/partial_sort)

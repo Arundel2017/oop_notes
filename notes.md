@@ -91,8 +91,6 @@
   - [Sorting](#sorting)
     - [Points to Remember](#points-to-remember-14)
     - [Key Reading](#key-reading-13)
-    - [Supplementary Reading](#supplementary-reading-11)
-    - [Core Guidelines](#core-guidelines-9)
     - [CPP Reference](#cpp-reference-12)
 
 ## Intro
@@ -1038,11 +1036,40 @@ std::set<std::string> exclude = {"the", "but", "and", "a", "an", "or", "A", "An"
 ### Sorting
 
 #### Points to Remember
+- The `std::sort()` algorithm in the `<algorithm>` header, known as **plain sort** comes in two flavours:
+
+```C++
+sort(b,e) //Sort [b:e)
+sort(b,e,f) //Sort [b:e) using f(*p,*q) as the sort criterion
+
+//example of use:
+
+#include <algorithm>
+#include <vector>
+
+std::vector<int> myVector{9,8,7,6,5,4,3,2,1};
+
+std::sort(myVector.begin(),myVector.end()) //sorts vector in ascending order
+
+//dummy custom comparator function
+bool greaterThan(int a, int b) {
+  return a > b;
+}
+
+std::sort(myVector.begin(),myVector.end(),greaterThan) //sorts in descending order
+```
+- The default comparator is the `<` operator.
+- The first two arguments are iterators marking the beginning and end of the range to be sorted. The iterators must meet the random access requirement.
+- Equivalence of values `a` and `b` is not done through `==` rather `!(a<b)&&!(b<a)`.
+- Basic sort efficiency on average is `N*log(N)`.
+- `stable_sort()` maintains the order of equal elements, its efficiency is `N*log(N)*log(N)` but improves with sufficient system memory.
+- For other members of the `sort` family, see *C++*, p. 943.
 
 #### Key Reading
-
-#### Supplementary Reading
-
-#### Core Guidelines
+- *Programming*, Section 21.8, *Sorting and Searching* (pp 794 - 796)
+- *C++*, Section 32.6, *Sorting and Searching* (pp 942 - 945)
 
 #### CPP Reference
+- [`sort()`](https://en.cppreference.com/w/cpp/algorithm/sort)
+- [`stable_sort()](https://en.cppreference.com/w/cpp/algorithm/stable_sort)
+- [`partial_sort()](https://en.cppreference.com/w/cpp/algorithm/partial_sort)

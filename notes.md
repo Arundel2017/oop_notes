@@ -82,6 +82,18 @@
     - [Supplementary Reading](#supplementary-reading-9)
     - [Core Guidelines](#core-guidelines-8)
     - [CPP Reference](#cpp-reference-10)
+- [Topic 4: Associative Containers and Sorting](#topic-4-associative-containers-and-sorting)
+  - [Associative Containers: Maps and Sets](#associative-containers-maps-and-sets)
+    - [Points to Remember](#points-to-remember-13)
+    - [Key Reading](#key-reading-12)
+    - [Supplementary Reading](#supplementary-reading-10)
+    - [CPP Reference](#cpp-reference-11)
+  - [Sorting](#sorting)
+    - [Points to Remember](#points-to-remember-14)
+    - [Key Reading](#key-reading-13)
+    - [Supplementary Reading](#supplementary-reading-11)
+    - [Core Guidelines](#core-guidelines-9)
+    - [CPP Reference](#cpp-reference-12)
 
 ## Intro
 
@@ -949,3 +961,88 @@ catch (runtime_error& e) {
 - [Exception types](https://en.cppreference.com/w/cpp/error/exception)
 - [`throw` expression](https://en.cppreference.com/w/cpp/language/throw)
 - [`try` block](https://en.cppreference.com/w/cpp/language/try_catch)
+
+
+## Topic 4: Associative Containers and Sorting
+
+### Associative Containers: Maps and Sets
+#### Points to Remember
+- A **map** in C++ is a means of efficiently storing and retrieving *(key, value)* pairs. Along with a **set** it is one of the two main **associative containers** in C++.
+- There are two kinds of maps:
+  - `<map>` (`std::map<T1,T2>`) is implemented as a balanced binary search tree and requires an *ordering function* (default is `<`). Cost of a lookup is `O(log(n))` where `n` is the number of elements in the map.
+  - `<unordered_map>` (`std::unordered_map<T1,T2>`) is a hash table, and provides hashing functions for STL and built-in types. Lookup will be faster with a good hashing function than an ordered map  `O(1)`.
+- Use unordered where you need fast lookup on a large set, or if elements have no natural order, ordered where you need to iterate in order over the set.
+- For constraints on what types can be used as keys see *Primer*, p. 424.
+- When we fetch an element from a map we get an object of type `pair` with two data elements `first` (the key) and `second` (the value), see example below.
+- Their use is pretty similar, `map` shown here:
+
+```C++
+#include <map>
+#include <string>
+#include <iostream>
+
+using std::map;
+using std::string;
+
+map<string,int> phone_directory {
+  {"Matthew King", 123456},
+  {"Sara Santos", 3455212},
+  {"Marco Gilles", 987653}
+};
+
+string name = "Matthew King";
+
+std::cout << phone_directory[name]; // prints 123456
+
+string unknown = "Brian Blessed";
+
+int number = phone_directory[unknown]; // key is not found, so entered on the map with default value, 0 for integers
+
+std::cout << number //default value (0)
+
+map<string, int> word_count;
+string word;
+
+while(cin >> word) {
+  ++word_count[word]; //Note this creates an entry with 0 and increments to 1 if not previously seen.
+}
+
+for (const auto &w : word_count) {
+  std::cout << w.first << " occurs " << w.second << " times." <<std::endl;
+  }
+```
+- NB there are also `multimap<T1,T2>` and `unordered_multimap<T1,T2>` types where a key can occur multiple times. For example a dictionary with multiple definitions of a single word.
+- There is also a `set<T>` type which is a `map` where there is no value, just a key. It also has a corresponding `multiset<T>` type. An `unordered_set<T>` and `unordered_multiset<T>` are hash-table versions of sets.
+- Use cases for sets include a list of ignore words in text processing:
+
+```C++
+#include <set>
+#include <string>
+
+std::set<std::string> exclude = {"the", "but", "and", "a", "an", "or", "A", "An"}
+```
+
+#### Key Reading
+- *Primer*: Chapter 11, *Associative Containers* (pp 419 - 447)
+- *Programming*: Section 21.6, *Associative containers* (pp 776 - 789)
+
+#### Supplementary Reading
+- *Tour*, Sections 11.4 and 11.5, *`map`* and *`unordered_map`* (pp 144 - 146)
+- *C++*, Section 31.4.3, *Associative Containers* (pp 909 - 920)
+
+#### CPP Reference
+- [Associative Containers](https://en.cppreference.com/w/cpp/named_req/AssociativeContainer)
+- [`std::map`](https://en.cppreference.com/w/cpp/container/map)
+- [`std::set`](https://en.cppreference.com/w/cpp/container/set)
+
+### Sorting
+
+#### Points to Remember
+
+#### Key Reading
+
+#### Supplementary Reading
+
+#### Core Guidelines
+
+#### CPP Reference

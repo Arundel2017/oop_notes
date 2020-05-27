@@ -2,111 +2,44 @@
 # OOP++
 - [Intro](#intro)
 - [Topic 0: Background Concepts and C++ Terminology](#topic-0-background-concepts-and-c-terminology)
-  - [Points to Remember](#points-to-remember)
-  - [Key Reading](#key-reading)
 - [Topic 1: Functions and User Input](#topic-1-functions-and-user-input)
   - [Function Basics](#function-basics)
-    - [Points to Remember](#points-to-remember-1)
+    - [Points to Remember](#points-to-remember)
     - [Scope and Lifetime](#scope-and-lifetime)
-    - [Key Reading](#key-reading-1)
-    - [Supplementary Readings](#supplementary-readings)
-    - [Core Guidelines](#core-guidelines)
-    - [CPP Reference](#cpp-reference)
   - [User Input Handling](#user-input-handling)
-    - [Points to Remember](#points-to-remember-2)
+    - [Points to Remember](#points-to-remember-1)
     - [Basic Error Handling](#basic-error-handling)
-    - [Key Reading](#key-reading-2)
-    - [Supplementary Reading](#supplementary-reading)
-    - [Core Guidelines](#core-guidelines-1)
-    - [CPP Reference](#cpp-reference-1)
 - [Topic 2a Fundamental and Built-in Data Types](#topic-2a-fundamental-and-built-in-data-types)
-  - [Points to Remember](#points-to-remember-3)
+  - [Points to Remember](#points-to-remember-2)
   - [Booleans](#booleans)
   - [Number Types](#number-types)
-    - [Points to Remember](#points-to-remember-4)
-    - [Key Reading](#key-reading-3)
-    - [Supplementary Reading](#supplementary-reading-1)
-    - [CPP Reference](#cpp-reference-2)
   - [Strings](#strings)
-    - [Points to Remember](#points-to-remember-5)
-    - [Key Reading](#key-reading-4)
-    - [Supplementary Reading](#supplementary-reading-2)
-    - [Core Guidelines](#core-guidelines-2)
-    - [CPP Reference](#cpp-reference-3)
   - [Vectors](#vectors)
-    - [Points to Remember](#points-to-remember-6)
-    - [Key Reading](#key-reading-5)
-    - [Supplementary Reading](#supplementary-reading-3)
-    - [Core Guidelines](#core-guidelines-3)
-    - [CPP Reference](#cpp-reference-4)
 - [Topic 2b User Defined Types: Enumerations and Classes](#topic-2b-user-defined-types-enumerations-and-classes)
   - [Enumerations](#enumerations)
-    - [Points to Remember](#points-to-remember-7)
-    - [Key Reading](#key-reading-6)
-    - [Supplementary Reading](#supplementary-reading-4)
-    - [Core Guidelines](#core-guidelines-4)
-    - [CPP Reference](#cpp-reference-5)
   - [Classes: Basic Syntax and Constructors](#classes-basic-syntax-and-constructors)
-    - [Points to Remember](#points-to-remember-8)
+    - [Points to Remember](#points-to-remember-3)
     - [Member Functions](#member-functions)
-    - [Key Reading](#key-reading-7)
-    - [Supplementary Reading](#supplementary-reading-5)
-    - [Core Guidelines](#core-guidelines-5)
-    - [CPP Reference](#cpp-reference-6)
 - [Topic 2c Source File Organization](#topic-2c-source-file-organization)
   - [Class Structure and Header Files](#class-structure-and-header-files)
-    - [Points to Remember](#points-to-remember-9)
-    - [Key Reading](#key-reading-8)
-    - [Supplementary Reading](#supplementary-reading-6)
-    - [Core Guidelines](#core-guidelines-6)
-    - [CPP Reference](#cpp-reference-7)
 - [Topic 3: File Handling, Input Streams, and Exceptions](#topic-3-file-handling-input-streams-and-exceptions)
   - [File Handling](#file-handling)
-    - [Points to Remember](#points-to-remember-10)
     - [File Modes](#file-modes)
-    - [Key Reading](#key-reading-9)
-    - [Supplementary Reading](#supplementary-reading-7)
-    - [CPP Reference](#cpp-reference-8)
   - [Input Streams and Tokenizing](#input-streams-and-tokenizing)
-    - [Points to Remember](#points-to-remember-11)
-    - [Key Reading](#key-reading-10)
-    - [Supplementary Reading](#supplementary-reading-8)
-    - [Core Guidelines](#core-guidelines-7)
-    - [CPP Reference](#cpp-reference-9)
   - [Exception Handling](#exception-handling)
-    - [Points to Remember](#points-to-remember-12)
+    - [Points to Remember](#points-to-remember-4)
     - [Throwing an Exception](#throwing-an-exception)
     - [Catching an Exception](#catching-an-exception)
     - [Exception Classes](#exception-classes)
-    - [Key Reading](#key-reading-11)
-    - [Supplementary Reading](#supplementary-reading-9)
-    - [Core Guidelines](#core-guidelines-8)
-    - [CPP Reference](#cpp-reference-10)
 - [Topic 4: Associative Containers and Sorting](#topic-4-associative-containers-and-sorting)
   - [Associative Containers: Maps and Sets](#associative-containers-maps-and-sets)
-    - [Points to Remember](#points-to-remember-13)
-    - [Key Reading](#key-reading-12)
-    - [Supplementary Reading](#supplementary-reading-10)
-    - [CPP Reference](#cpp-reference-11)
   - [Sorting](#sorting)
-    - [Points to Remember](#points-to-remember-14)
-    - [Key Reading](#key-reading-13)
-    - [CPP Reference](#cpp-reference-12)
 - [Topic Five: Member Functions and Operator Overloading](#topic-five-member-functions-and-operator-overloading)
   - [Member Functions Continued: `static`, `const` and `friend` functions](#member-functions-continued-static-const-and-friend-functions)
     - [`static` functions](#static-functions)
     - [`const` member functions](#const-member-functions)
     - [`friend` functions](#friend-functions)
-    - [Key Reading](#key-reading-14)
-    - [Supplementary Reading](#supplementary-reading-11)
-    - [Core Guidelines](#core-guidelines-9)
-    - [CPP Reference](#cpp-reference-13)
   - [Operator Overloading](#operator-overloading)
-    - [Points to Remember](#points-to-remember-15)
-    - [Key Reading](#key-reading-15)
-    - [Supplementary Reading](#supplementary-reading-12)
-    - [Core Guidelines](#core-guidelines-10)
-    - [CPP Reference](#cpp-reference-14)
 
 ## Intro
 
@@ -123,7 +56,7 @@ And references to the following resources:
 - [C++ Reference](https://en.cppreference.com/w/)
 
 ## Topic 0: Background Concepts and C++ Terminology
-
+<!-- omit in toc -->
 ### Points to Remember
 - An **object** is a region of memory with a **type** that defines its possible values and a set of operations that can be applied to it.
 - A **variable** is a named object.
@@ -142,8 +75,7 @@ And references to the following resources:
 - Variables can be made *immutable* by declaring them as `const` (meaning "I promise not to change this"), or `constexpr` (meaning "to be evaluated at compile time"), the difference is when the value is calculated either run-time or compile time respectively.
 - In variable declarations `*` signifies a **pointer** and `&` signifies a **reference**. Both are ways to denote an object in memory without evaluating or copying it. The syntax to access the values is different (see *Tour*, p. 11)
 
-
-
+<!-- omit in toc -->
 ### Key Reading
 
 - *Tour*: Chapter One, *The Basics* (pp 1 - 19)
@@ -175,24 +107,24 @@ And references to the following resources:
 - Objects that correspond to ordinary local variables are destroyed when control passes through the end of the block where they are defined. They are known as **automatic objects**.
 - NB you cannot nest functions within other functions so **no closure**.
 - If you need a local variable to persist across multiple function calls you need to declare it as a **local static object**, using the `static` keyword.
-
+<!-- omit in toc -->
 #### Key Reading
 
 - *Primer*: Chapter 6, sections 6.1 - 6.3, *Function Basics*, *Argument Passing*, and *Return Types and the `return` Statement* (pp 201 - 230)
 - *Programming*: Chapter 8, *Technicalities: Functions* (pp 255 - 297)
-
+<!-- omit in toc -->
 #### Supplementary Readings
 - *Tour*: Section 1.3, *Functions* (pp 4 - 5)
 - *Programming*:  Section 4.5, *Functions* (pp 113 - 117)
 - *C++*: Chapter 12, *Functions*, especially sections 12.1 - 12.1.5 (pp 305 - 310)
-
+<!-- omit in toc -->
 #### Core Guidelines
 
 - [F Functions - General](http://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#f-functions)
 - [F.1 Package meaningful operations as functions](http://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rf-package)
 - [F.2 A Function should perform a single logical operation](http://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rf-logical)
 - [F.3 Keep Functions short and simple](http://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rf-single)
-
+<!-- omit in toc -->
 #### CPP Reference
 - [Intro to Functions](https://en.cppreference.com/w/cpp/language/functions)
 - [Function Declarations and Definitions](https://en.cppreference.com/w/cpp/language/function)
@@ -243,13 +175,13 @@ if(!cin)
     }
 }
 ```
-
+<!-- omit in toc -->
 #### Key Reading
 - *Programming*: Chapter 10, *Input and Output Streams* (p. 345ff), especially:
   - Sections 10.1 and 10.2, *Input and Output* and *The I/O Stream model* (pp 346 - 349)
   - Sections 10.6 and 10.7, *I/O error handling* and *Reading a single value* (pp 354 - 363)
 - *Primer*: Sections 1.2, *A First Look at Input and Output* (pp 5 - 9) and 8.1, *The IO Classes* (pp 309 - 316)
-
+<!-- omit in toc -->
 #### Supplementary Reading
 - *Tour*: Chapter 10, *Input and Output* especially sections 10.1-10.4 (pp 123 - 127)
 - *Programming*:
@@ -262,13 +194,13 @@ if(!cin)
   - Section 38.4.1.1 *Formatted Input* (pp 1082-1083)
   - I/O advice (p. 1107)
 
-
+<!-- omit in toc -->
 #### Core Guidelines
 - [I/O Stream](http://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#SS-io)
 - [Avoid Character level input](http://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#slio1-use-character-level-input-only-when-you-have-to)
 - [Prefer I/O streams](http://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#slio1-use-character-level-input-only-when-you-have-to)
 - [Avoid endl](http://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rio-endl)
-
+<!-- omit in toc -->
 #### CPP Reference
 - [I/O Library](https://en.cppreference.com/w/cpp/io)
 - [std::flush](https://en.cppreference.com/w/cpp/io/manip/flush)
@@ -313,7 +245,7 @@ if(!cin)
 - A pointer can also be implicitly converted, a `non-null` pointer converts to `true` a `nullptr` converts to `false`. (so if `p` is a pointer then `if(p)` works).
 
 ### Number Types
-
+<!-- omit in toc -->
 #### Points to Remember
 - C++ compilers use [Two's Complement](https://en.wikipedia.org/wiki/Two%27s_complement) representation of numbers.
 - Floats and doubles use [IEEE 754](https://en.wikipedia.org/wiki/IEEE_754) formats, 32 bit for floats, 64 bit for doubles.
@@ -326,11 +258,12 @@ if(!cin)
 - Can also have issues casting an integer to float - because they can take the same space and float needs exponent and mantissa. So can have issues with float not representing the largest ints correctly.
 - Avoid unsigned ints if possible, using them is error-prone (*Programming*, p 965). Avoid mixing signed and unsigned ints (*Primer*, p. 37)
 - Avoid using floats, use doubles instead as floats lack required precision, also avoid `long double` as it is very costly (*Primer*, p. 34)
+<!-- omit in toc -->
 #### Key Reading
 
 - *Primer*: Sections 2.1 and 2.2.1 - 2.2.2, *Primitive Built-in Types* and *Variables* (pp 32 - 46)
 - *C++*: Section 6.2, *Types* (pp 138 - 151)
-
+<!-- omit in toc -->
 #### Supplementary Reading
 
 - *Tour*: Section 1.4, *Types, Variables, and Arithmetic* (pp 5 - 8)
@@ -338,12 +271,13 @@ if(!cin)
   - Sections 3.8 and 3.9, *Types and objects* and *Type Safety* (pp 77 - 88)
   - Section 24.2, *Size, precision and overflow* (pp 890 - 895)
   - Section 25.5.3, *Signed and unsigned integers* (pp 961 - 965)
-
+<!-- omit in toc -->
 #### CPP Reference
 - [Fundamental Types](https://en.cppreference.com/w/cpp/language/types)
 
 
 ### Strings
+<!-- omit in toc -->
 #### Points to Remember
 - A `string` is a variable length sequence of characters that knows its own length.
 - Use as follows:
@@ -383,30 +317,31 @@ if(!cin)
       cout << line << '\n'; //NB have to add '\n' back in
   ```
 - You cannot `switch` on strings, annoyingly.
+<!-- omit in toc -->
 #### Key Reading
 - *Primer*: Section 3.2, *Library `string` Type* (pp 84 - 96)
 - *C++*: Chapter 36, *Strings* (pp 1033 - 1049), especially:
   - Section 36.4, *Advice* (p. 1049)
   - Section 36.2.1 *Classification Functions* (p. 1034)
   - Section 36.3.7 *The `find` Family* (p. 1046) on search methods
-
+<!-- omit in toc -->
 #### Supplementary Reading
 - *Tour*: Section 9.2, *Strings* (pp 111 - 114)
 - *Programming* Section 23.2 and 23.3, *Strings* and *I/O Streams* (pp 850 - 855), especially:
   - Selected string operations (p. 851)
-
+<!-- omit in toc -->
 #### Core Guidelines
 - [std::string](http://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#SS-string)
 - [Use std::string to own character sequences](http://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rstr-string)
 - [Use char* to refer to a single character](http://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rstr-char*)
 - [Use 's' suffix for string literals meant to be std::string](http://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rstr-s)
-
+<!-- omit in toc -->
 #### CPP Reference
 - [String Library](https://en.cppreference.com/w/cpp/string)
 - [basic strings](https://en.cppreference.com/w/cpp/string/basic_string)
 
 ### Vectors
-
+<!-- omit in toc -->
 #### Points to Remember
 - A `vector` is a collection, or **container** of objects, all with the same type, that knows its own length. Objects in the vector can be accessed through their index.
 - NB `vector` is a template, not a type. Templates allow you to generate different types from them depending on information you pass with `<>` after the template name.
@@ -480,27 +415,28 @@ v1 == v2        //vectors are equal if they are the same size and each element i
 
 - Range checking is a common problem. Accessing elements out of range does not throw compiler error, and causes undefined values to be returned. For Stroustrup's custom solution see *Tour*, pp 141-142.
 - Consider vectors the default container, use them unless you have a reason not to (Stroustrup).
-
+<!-- omit in toc -->
 #### Key Reading
 - *Primer*: Section 3.3, *Library `vector` Type* (pp 96 - 105)
 - *Programming*: Section 4.6, `vector` (pp 117 - 125)
-
+<!-- omit in toc -->
 #### Supplementary Reading
 - *Tour*: Section 11.2, `vector` (pp 138 - 142)
 - *C++*: Section 31.4.1, `vector` (pp 902 - 906)
 - *Programming*: Chapters 17, 18, and 19 implement a `vector` Template and deep dive into how it works. They cover a lot of ground inc. constructors, destructors, the free store, templates etc. Useful reference for specific issues.
-
+<!-- omit in toc -->
 #### Core Guidelines
 - [Containers](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#SS-con)
 - [Prefer STL `vector` by default](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rsl-vectorr)
 - [Avoid Bounds Errors](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rsl-bounds)
-
+<!-- omit in toc -->
 #### CPP Reference
 - [vectors](https://en.cppreference.com/w/cpp/container/vector)
 
 
 ## Topic 2b User Defined Types: Enumerations and Classes
 ### Enumerations
+<!-- omit in toc -->
 #### Points to Remember
 - **Enumerations**, or `enums` are a simple user-defined type. They specify a set of values (or **enumerators**) as *symbolic constants* and allow us to group together *sets of integral constants*.
 - Enumerations are very useful. Use them when we need a set of related named integer constants. EG, for alternatives (up,down; yes, no; on, off, N, S, E, W; bid, offer) or distinct values (red, green blue, yellow, crimson)
@@ -536,14 +472,14 @@ v1 == v2        //vectors are equal if they are the same size and each element i
 - Or you can create a map of labels if you want to print a string (see code example above).
 - The compiler will pick the value for each enumerator you don't specify, default starting at `0`, then incrementing by 1. Better to let the compiler pick values for you, though you can explicitly define each value.
 - You can also specify the underlying type of the enum, if you don't want an int, but this is generally avoided.
-
+<!-- omit in toc -->
 #### Key Reading
 - *Programming*: Section 9.5, *Enumerations* (pp 318 - 321)
 - *Primer*: Section 19.3, *Enumerations* (pp 832 - 835)
-
+<!-- omit in toc -->
 #### Supplementary Reading
 - *C++*: Section 8.4, *Enumerations* (pp 218 - 224)
-
+<!-- omit in toc -->
 #### Core Guidelines
 - [Enumerations](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#S-enum)
 - [Use enumerations to represent sets of related named constants](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Renum-set)
@@ -553,7 +489,7 @@ v1 == v2        //vectors are equal if they are the same size and each element i
 - [Avoid unnamed enums](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Renum-unnamed)
 - [Specify the underlying type of the enum only if necessary](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Renum-underlying)
 - [Specify the enumerator values only if necessary](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Renum-value)
-
+<!-- omit in toc -->
 #### CPP Reference
 - [Enum declaration](https://en.cppreference.com/w/cpp/language/enum)
 
@@ -616,10 +552,11 @@ v1 == v2        //vectors are equal if they are the same size and each element i
   - The function must be invoked on an object (has a `this` pointer).
 - You can declare a member function `static` to give it the first two properties only. And you can declare a nonmember function a `friend` to give it the first property. (This is covered later).
 - The compiler processes classes in two steps. First member declarations are compiled, and then member function bodies are processed. So member functions can use other members in the class regardless of where those members are declared.
+<!-- omit in toc -->
 #### Key Reading
 - *Programming*, Chapter 9, *Technicalities: Classes, etc* (pp 303 - 342) Ch. 9 evolves a date class, growing in complexity.
 - *C++*, Sections 16.1 - 16.2.5 (pp 449 - 457), and p. 571.
-
+<!-- omit in toc -->
 #### Supplementary Reading
 - *Tour*, Sections 4.1 and 4.2 (pp 47 - 51)
 - *Primer*:
@@ -627,21 +564,21 @@ v1 == v2        //vectors are equal if they are the same size and each element i
   -  Section 7.1.3, on class helper functions (pp 260 - 262)
   -  Section 7.1.4, *Constructors* (pp 262 - 266)
   -  NB *Primer* chapter on classes relies a lot on a case study built up over previous chapters so a bit hard to follow if you're not working through the book.
-
+<!-- omit in toc -->
 #### Core Guidelines
 - [Classes](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#S-class)
 - [Organize related data into structures (`struct` or `class`)](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rc-org)
 - [Use `class` not `struct` if there are invariants](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rc-struct)
 - [Use `class` not `struct` if there are any private members](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rc-class)
 - [Represent the distinction between *interface* and *implementation* in the class](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rc-interface)
-
+<!-- omit in toc -->
 #### CPP Reference
 - [Classes](https://en.cppreference.com/w/cpp/language/classes)
 - [Default Constructor](https://en.cppreference.com/w/cpp/language/default_constructor)
 ## Topic 2c Source File Organization
 
 ### Class Structure and Header Files
-
+<!-- omit in toc -->
 #### Points to Remember
 - C++ allows for **separate compilation** where user code only sees the declarations of the classes and functions it uses (their *interfaces*).
 - The full definitions are then in separate source code files and can be compiled separately, minimizing compile times.
@@ -675,16 +612,17 @@ v1 == v2        //vectors are equal if they are the same size and each element i
 // contents of the header
 #endif /* LIBRARY_FILENAME_H */ //end the conditional and resume execution
 ```
+<!-- omit in toc -->
 #### Key Reading
 - *C++*:
   - Section 15.2.2 - 15.2.4, *Header Files*, *The One-Definition Rule*, and *Standard-Library Headers* (pp 424 - 428)
   - Section 15.3, *Using Header Files* (pp 431 - 441)
-
+<!-- omit in toc -->
 #### Supplementary Reading
 - *Tour*, Section 3.2, *Separate Compilation* (pp 30 - 32)
 - *Primer*, Section 2.6.3, *Writing our Own Header Files* (pp 76 - 77)
 - *Programming*, Section 8.3, *Header Files* (pp 264 - 266)
-
+<!-- omit in toc -->
 #### Core Guidelines
 - [Source Files](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#S-source)
 - [Use header files for all declarations used in multiple files](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rs-declaration-header)
@@ -692,7 +630,7 @@ v1 == v2        //vectors are equal if they are the same size and each element i
 - [Use `#include` guards on all header files](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rs-guards)
 - [Put `#include` at the top of files](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rs-include-order)
 - [Avoid cyclic dependencies if possible](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rs-cycles)
-
+<!-- omit in toc -->
 #### CPP Reference
 - [Source file inclusion](https://en.cppreference.com/w/cpp/preprocessor/include)
 - [#pragma once](https://en.cppreference.com/w/cpp/preprocessor/impl)
@@ -701,7 +639,7 @@ v1 == v2        //vectors are equal if they are the same size and each element i
 ## Topic 3: File Handling, Input Streams, and Exceptions
 
 ### File Handling
-
+<!-- omit in toc -->
 #### Points to Remember
 - In C++, a **file** is an abstraction on what the OS provides. It is a sequence of bytes numbered from 0 upwards.
 - In C++, the assumption is that these "bytes on disk" are characters in the usual character set. So by default a **file stream** interprets a sequence of bytes as a sequence of characters and converts them to objects in memory (or vice versa).
@@ -762,16 +700,17 @@ std::ofstream output{"example.csv", std::ofstream::app} //preserves the file con
 std::fstream output{"example.csv"} //preserves file content, file available for input and output
 
 ```
-
+<!-- omit in toc -->
 #### Key Reading
 - *Primer*: Section 8.2, *File Input and Output* (pp 316 - 320)
 - *Programming*:
   - Sections 10.3 - 10.5, *Files*, *Opening a file*, *Reading and writing a file* (pp 349 - 354)
   - Section 11.3, *File opening and positioning* (pp 388 - 394)
+<!-- omit in toc -->
 #### Supplementary Reading
 - *Tour*: Section 10.7, *File Streams* (p. 130)
 - *CPP*: Section 38.2.1, *File Streams* (pp 1076 - 1078)
-
+<!-- omit in toc -->
 #### CPP Reference
 - [`<fstream>` Header](https://en.cppreference.com/w/cpp/header/fstream)
 - [Stream states](https://en.cppreference.com/w/cpp/io/ios_base/iostate)
@@ -780,6 +719,7 @@ std::fstream output{"example.csv"} //preserves file content, file available for 
 - [`fstream` - File I/O stream](https://en.cppreference.com/w/cpp/io/basic_fstream)
 - [`open` a file for input](https://en.cppreference.com/w/cpp/io/basic_ifstream/open)
 ### Input Streams and Tokenizing
+<!-- omit in toc -->
 #### Points to Remember
 - Remember the fundamental purpose of an IO stream is to translate between a sequence of bytes (usually) interpreted as standard [ASCII characters](https://en.cppreference.com/w/cpp/language/ascii) ('a', '3', '\n' etc) and objects in memory of any type.
 - The standard stream libraries provide two main tool-kits to do this:
@@ -856,7 +796,7 @@ using std::string;
 ```
 - NB a lot of formatting methods are more useful for output processing than input, this is covered later.
 
-
+<!-- omit in toc -->
 #### Key Reading
 - *Programming*:
   - Chapter 6 is an extended deep dive on approaching handling input by building a command line calculator, implementing a custom `Token` class for tokenization. A very different approach to the UoL module, worth following through.
@@ -867,7 +807,7 @@ using std::string;
     - Section 11.1, *Regularity and Irregularity* (p. 380)
     - Sections 11.4 - 11.7, *String Streams*, *Line-oriented input*, *Character classificaitons*, *Using nonstandard separators*
 - *Primer*: Section 17.5.1 and 17.4.2, *Formatted and unformatted Input/Output operations* (pp 753 - 763) (includes stuff on formatting output not relevant here)
-
+<!-- omit in toc -->
 #### Supplementary Reading
 - *C++*:
   - Section 38.4.1, *Input Operations* (pp 1081 - 1084)
@@ -876,17 +816,18 @@ using std::string;
 - *Programming*:
   - Section B.7.3, *Input Operations* (p. 1172)
   - Section B.8.1, *Character Classification* (p. 1175)
-
+<!-- omit in toc -->
 #### Core Guidelines
 - [Use character level input only when necessary](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rio-low)
 - [Always handle ill-formed input](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rio-validate)
-
+<!-- omit in toc -->
 #### CPP Reference
 - [`>>` Operator](https://en.cppreference.com/w/cpp/io/basic_istream/operator_gtgt)
 - [getline() Template](https://en.cppreference.com/w/cpp/string/basic_string/getline)
 - [ASCII Chart](https://en.cppreference.com/w/cpp/language/ascii)
 
 ### Exception Handling
+
 #### Points to Remember
 - An **exception** is a run-time anomaly, such as losing a database connection or receiving bad input, that is outside the normal functioning of a program. Managing exceptions is one of the hardest parts of program design.
 - **Exception handling** allows separately developed parts of a program to communicate about and handle problems that occur at run time, separating problem detection from detection resolution.
@@ -955,6 +896,7 @@ catch (runtime_error& e) {
 }
 ```
 - It is possible to define your own exception types, freestanding or inheriting from the standard library types. For discussion and examples see *Primer*, pp 782 - 784.
+<!-- omit in toc -->
 #### Key Reading
 
 - *Primer*:
@@ -963,7 +905,7 @@ catch (runtime_error& e) {
 - *Programming*:
   - Section 5.5, *Run-time errors* (pp 140 - 146)
   - Section 5.6, *Exceptions* (pp 146 - 154)
-
+<!-- omit in toc -->
 #### Supplementary Reading
 - *Tour*:
   - Section 3.5, *Error Handling* (pp 35 - 40)
@@ -973,13 +915,14 @@ catch (runtime_error& e) {
     - *Advice*, p. 387
     - *Traditional Error Handling*, pp 345 - 346
     - *Exception Guarantees*, pp 353 - 354
+<!-- omit in toc -->
 #### Core Guidelines
 - [Error Handling](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#S-errors)
 - [Throw an exception to indicate a function cannot complete its task](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Re-throw)
 - [Design error handling around *invariants*](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Re-design-invariants)
 - [Use RAII to avoid resource leaks](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Re-raii)
 - [Properly order your catch clauses](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Re_catch)
-
+<!-- omit in toc -->
 #### CPP Reference
 - [Exceptions overview](https://en.cppreference.com/w/cpp/language/exceptions)
 - [Exception types](https://en.cppreference.com/w/cpp/error/exception)
@@ -990,6 +933,7 @@ catch (runtime_error& e) {
 ## Topic 4: Associative Containers and Sorting
 
 ### Associative Containers: Maps and Sets
+<!-- omit in toc -->
 #### Points to Remember
 - A **map** in C++ is a means of efficiently storing and retrieving *(key, value)* pairs. Along with a **set** it is one of the two main **associative containers** in C++.
 - There are two kinds of maps:
@@ -1045,22 +989,22 @@ for (const auto &w : word_count) {
 
 std::set<std::string> exclude = {"the", "but", "and", "a", "an", "or", "A", "An"}
 ```
-
+<!-- omit in toc -->
 #### Key Reading
 - *Primer*: Chapter 11, *Associative Containers* (pp 419 - 447)
 - *Programming*: Section 21.6, *Associative containers* (pp 776 - 789)
-
+<!-- omit in toc -->
 #### Supplementary Reading
 - *Tour*, Sections 11.4 and 11.5, *`map`* and *`unordered_map`* (pp 144 - 146)
 - *C++*, Section 31.4.3, *Associative Containers* (pp 909 - 920)
-
+<!-- omit in toc -->
 #### CPP Reference
 - [Associative Containers](https://en.cppreference.com/w/cpp/named_req/AssociativeContainer)
 - [`std::map`](https://en.cppreference.com/w/cpp/container/map)
 - [`std::set`](https://en.cppreference.com/w/cpp/container/set)
 
 ### Sorting
-
+<!-- omit in toc -->
 #### Points to Remember
 - The `std::sort()` algorithm in the `<algorithm>` header, known as **plain sort** comes in two flavours:
 
@@ -1090,11 +1034,11 @@ std::sort(myVector.begin(),myVector.end(),greaterThan) //sorts in descending ord
 - Basic sort efficiency on average is `N*log(N)`.
 - `stable_sort()` maintains the order of equal elements, its efficiency is `N*log(N)*log(N)` but improves with sufficient system memory.
 - For other members of the `sort` family, see *C++*, p. 943.
-
+<!-- omit in toc -->
 #### Key Reading
 - *Programming*, Section 21.8, *Sorting and Searching* (pp 794 - 796)
 - *C++*, Section 32.6, *Sorting and Searching* (pp 942 - 945)
-
+<!-- omit in toc -->
 #### CPP Reference
 - [`sort()`](https://en.cppreference.com/w/cpp/algorithm/sort)
 - [`stable_sort()`](https://en.cppreference.com/w/cpp/algorithm/stable_sort)
@@ -1109,17 +1053,17 @@ std::sort(myVector.begin(),myVector.end(),greaterThan) //sorts in descending ord
 #### `const` member functions
 
 #### `friend` functions
-
+<!-- omit in toc -->
 #### Key Reading
-
+<!-- omit in toc -->
 #### Supplementary Reading
-
+<!-- omit in toc -->
 #### Core Guidelines
-
+<!-- omit in toc -->
 #### CPP Reference
 
 ### Operator Overloading
-
+<!-- omit in toc -->
 #### Points to Remember
 - You can define almost all C++ operators for class or enumeration operands. This is often referred to as *operator overloading*.
 - You can only define existing operators, not make up new ones, e.g. you cannot invent a `$=` operator.
@@ -1169,19 +1113,20 @@ ostream &operator<<(ostream &os, const Sales_data &item) {
 - Input operators must deal with the possibility that input might fail, output operators generally don't bother. In particular, input operators need to make sure they leave the object in a valid state.
 - Sometimes the input operator might need to do additional validation (like checking a value is in a range), if that validation fails the operator can set the `failbit` of the stream to indicate failure.
 - For outlines of other common operators and their use see *Primer*, pp 561 - 572.
+<!-- omit in toc -->
 #### Key Reading
 - *Primer*, Chapter 14, *Overloaded Operations and Conversions*, p. 552ff
 - *C++*, Chapter 18, *Operator Overloading*, p. 527ff
-
+<!-- omit in toc -->
 #### Supplementary Reading
 - *Programming*, section 9.6, *Operator Overloading*, pp 321 -323.
-
+<!-- omit in toc -->
 #### Core Guidelines
 - [Overloading Operators](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#SS-overload)
 - [Mimic Conventional Usage](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Ro-conventional)
 - [Use non-member functions for symmetric operators](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Ro-symmetric)
 - [Avoid implicit conversion operators](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Ro-conversion)
 - [Define overloaded operators in the namespace of their operands](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Ro-namespace)
-
+<!-- omit in toc -->
 #### CPP Reference
 - [Operator Overloading](https://en.cppreference.com/w/cpp/language/operators)

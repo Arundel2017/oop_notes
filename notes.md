@@ -92,6 +92,21 @@
     - [Points to Remember](#points-to-remember-14)
     - [Key Reading](#key-reading-13)
     - [CPP Reference](#cpp-reference-12)
+- [Topic Five: Member Functions and Operator Overloading](#topic-five-member-functions-and-operator-overloading)
+  - [Member Functions Continued: `static`, `const` and `friend` functions](#member-functions-continued-static-const-and-friend-functions)
+    - [`static` functions](#static-functions)
+    - [`const` member functions](#const-member-functions)
+    - [`friend` functions](#friend-functions)
+    - [Key Reading](#key-reading-14)
+    - [Supplementary Reading](#supplementary-reading-11)
+    - [Core Guidelines](#core-guidelines-9)
+    - [CPP Reference](#cpp-reference-13)
+  - [Operator Overloading](#operator-overloading)
+    - [Points to Remember](#points-to-remember-15)
+    - [Key Reading](#key-reading-15)
+    - [Supplementary Reading](#supplementary-reading-12)
+    - [Core Guidelines](#core-guidelines-10)
+    - [CPP Reference](#cpp-reference-14)
 
 ## Intro
 
@@ -1084,3 +1099,89 @@ std::sort(myVector.begin(),myVector.end(),greaterThan) //sorts in descending ord
 - [`sort()`](https://en.cppreference.com/w/cpp/algorithm/sort)
 - [`stable_sort()`](https://en.cppreference.com/w/cpp/algorithm/stable_sort)
 - [`partial_sort()`](https://en.cppreference.com/w/cpp/algorithm/partial_sort)
+
+## Topic Five: Member Functions and Operator Overloading
+
+### Member Functions Continued: `static`, `const` and `friend` functions
+
+#### `static` functions
+
+#### `const` member functions
+
+#### `friend` functions
+
+#### Key Reading
+
+#### Supplementary Reading
+
+#### Core Guidelines
+
+#### CPP Reference
+
+### Operator Overloading
+
+#### Points to Remember
+- You can define almost all C++ operators for class or enumeration operands. This is often referred to as *operator overloading*.
+- You can only define existing operators, not make up new ones, e.g. you cannot invent a `$=` operator.
+- You can only use the conventional number of operands, e.g. you cannot have a unary `<=` operator.
+- Four symbols serve as both unary and binary operators `+ - * &`. The number of parameters in the overloading function determines which operator is being overloaded.
+- Overloaded operators must have at least one user defined type as an operand, eg you can't overload `+` operating on two `int` objects.
+- Try to define operators with their conventional meaning, e.g. `+` means addition.
+- An example in use:
+
+```C++
+enum class Month {
+  Jan =1,Feb,Mar,Apr...
+}
+
+Month operator++(Month& m) {
+  m = (m==Month::Dec) ? Month::Jan : Month(int(m)+1);
+  return m;
+}
+
+Month m = Feb;
+
+m++; //m is now Mar
+operator++(m); //equivalent, m is now Apr
+```
+- The following operators cannot be overloaded: `?: . .* :: sizeof typeid alignas noexcept`
+- Operand evaluation guarantees are not preserved for overloaded operators. For example in `&&` or `||` operations.
+- So ordinarily don't overload these operators: `&& || , &` - their behaviour may surprise users.
+- If a class has `==`, it should probably have `!=` as well. Likewise if it has `<` it should probably have other relations.
+- Where an operator overload is a class member function, the first (left-hand) operand is bound to the implicit `this` pointer. So member operator functions have one less explicit parameter than the number of operands.
+- Some tips on when to define overloads as member or non-member functions:
+  - Assignment (`=`), subscript (`[]`), call (`()`), and member access arrow (`->`) must be defined as member functions.
+  - Compound assignment operators (eg `+=`) should be defined as member functions.
+  - Operators that change the state of their object or are closely tied to their given type (eg increment, decrement, dereference) usually should be member functions
+  - Symmetric operators - those that might convert either operand (eg arithmetic, equality, relational, bitwise) should usually be non-member functions.
+  - IO operators should be non-member functions.
+  - Any time the left-hand operand might not be an object of the class, the overload should be a non-member function.
+- An example of overloading the ostream operator `<<` from *Primer*, p. 557:
+
+```C++
+ostream &operator<<(ostream &os, const Sales_data &item) {
+  os << item.isbn << " " << item.units_sold << " "
+     << item.revenue << " " << item.avg_price();
+  return os;
+}
+```
+- Generally output operators should print the contents of the object with minimal formatting, they should not print a newline.
+- Input operators must deal with the possibility that input might fail, output operators generally don't bother. In particular, input operators need to make sure they leave the object in a valid state.
+- Sometimes the input operator might need to do additional validation (like checking a value is in a range), if that validation fails the operator can set the `failbit` of the stream to indicate failure.
+- For outlines of other common operators and their use see *Primer*, pp 561 - 572.
+#### Key Reading
+- *Primer*, Chapter 14, *Overloaded Operations and Conversions*, p. 552ff
+- *C++*, Chapter 18, *Operator Overloading*, p. 527ff
+
+#### Supplementary Reading
+- *Programming*, section 9.6, *Operator Overloading*, pp 321 -323.
+
+#### Core Guidelines
+- [Overloading Operators](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#SS-overload)
+- [Mimic Conventional Usage](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Ro-conventional)
+- [Use non-member functions for symmetric operators](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Ro-symmetric)
+- [Avoid implicit conversion operators](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Ro-conversion)
+- [Define overloaded operators in the namespace of their operands](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Ro-namespace)
+
+#### CPP Reference
+- [Operator Overloading](https://en.cppreference.com/w/cpp/language/operators)

@@ -1,0 +1,18 @@
+{
+  "summary": {
+    "title": "Sample Threat Model",
+    "owner": "me",
+    "description": "A simple test of Threat Dragon"
+  },
+  "detail": {
+    "contributors": [],
+    "diagrams": [
+      {
+        "title": "Testy",
+        "thumbnail": "./public/content/images/thumbnail.jpg",
+        "id": 0
+      }
+    ],
+    "reviewer": "you"
+  }
+}
